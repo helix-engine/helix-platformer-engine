@@ -73,6 +73,7 @@ int main(void)
             DrawFPS(0, 0);
             BeginMode2D(camera);
                 DrawFloor();
+                DrawGround();
                 Draw2DWorldVertex();
                 DrawPlayer(&player);
             EndMode2D();

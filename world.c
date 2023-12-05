@@ -20,6 +20,7 @@
 // distribution.
 
 #include "world.h"
+#include "raymath.h"
 
 bool drawVertex = true;
 
@@ -42,11 +43,11 @@ void InitGround()
     pFloors[5] = (Floor*)malloc(sizeof(Floor));
 
     *pFloors[0] = CreateFloor("floor.png", (Vector2){screenWidth / 2.0f, (float)screenHeight}, (float)screenWidth, 100, 10);
-    *pFloors[1] = CreateFloor("floor.png", (Vector2){screenWidth / 2.0f * 2 + 600.0f, (float)screenHeight}, (float)screenWidth, 100, 10);
-    *pFloors[2] = CreateFloor("floor.png", (Vector2){screenWidth / 2.0f * 3 + 600.0f * 2, (float)screenHeight}, (float)screenWidth, 100, 10);
-    *pFloors[3] = CreateFloor("floor.png", (Vector2){screenWidth / 2.0f * 4 + 600.0f * 3, (float)screenHeight}, (float)screenWidth, 100, 10);
-    *pFloors[4] = CreateFloor("floor.png", (Vector2){screenWidth / 2.0f * 5 + 600.0f * 4, (float)screenHeight}, (float)screenWidth, 100, 10);
-    *pFloors[5] = CreateFloor("floor.png", (Vector2){screenWidth / 2.0f * 6 + 600.0f * 5, (float)screenHeight}, (float)screenWidth, 100, 10);
+    *pFloors[1] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 2 + 600.0f, (float)screenHeight }, (float)screenWidth, 100, 10);
+    *pFloors[2] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 3 + 600.0f * 2, (float)screenHeight }, (float)screenWidth, 100, 10);
+    *pFloors[3] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 4 + 600.0f * 3, (float)screenHeight }, (float)screenWidth, 100, 10);
+    *pFloors[4] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 5 + 600.0f * 4, (float)screenHeight }, (float)screenWidth, 100, 10);
+    *pFloors[5] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 6 + 600.0f * 5, (float)screenHeight }, (float)screenWidth, 100, 10);
 
     // Allocate memory for each ground
     pGrounds[0] = (Ground*)malloc(sizeof(Ground));
@@ -55,11 +56,11 @@ void InitGround()
     pGrounds[3] = (Ground*)malloc(sizeof(Ground));
     pGrounds[4] = (Ground*)malloc(sizeof(Ground));
 
-    *pGrounds[0] = CreateGround("", (Vector2){screenWidth * 0.25f, screenHeight * 0.6f}, screenWidth * 0.25f, 10, 10);
-    *pGrounds[1] = CreateGround("", (Vector2){screenWidth * 0.25f + 600.0f, screenHeight * 0.5f}, screenWidth * 0.25f, 10, 10);
-    *pGrounds[2] = CreateGround("", (Vector2){screenWidth * 0.25f + 600.0f * 3, screenHeight * 0.3f}, screenWidth * 0.25f, 10, 10);
-    *pGrounds[3] = CreateGround("", (Vector2){screenWidth * 0.25f + 600.0f * 4, screenHeight * 0.6f}, screenWidth * 0.25f, 10, 10);
-    *pGrounds[4] = CreateGround("", (Vector2){screenWidth * 0.25f + 600.0f * 5, screenHeight * 0.6f}, screenWidth * 0.25f, 10, 10);
+    *pGrounds[0] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f, screenHeight * 0.6f }, screenWidth * 0.25f, 10, 10);
+    *pGrounds[1] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f, screenHeight * 0.5f }, screenWidth * 0.25f, 10, 10);
+    *pGrounds[2] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 3, screenHeight * 0.3f }, screenWidth * 0.25f, 10, 10);
+    *pGrounds[3] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 4, screenHeight * 0.6f}, screenWidth * 0.25f, 10, 10);
+    *pGrounds[4] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 5, screenHeight * 0.6f }, screenWidth * 0.25f, 10, 10);
 
     // Disable dynamics for floor physics bodies
     for (int i = 0; i < 6; i++)
@@ -87,9 +88,9 @@ Floor CreateFloor(const char* texture, Vector2 position, float width, float heig
 Ground CreateGround(const char* texture, Vector2 position, float width, float height, float density)
 {
     Ground ground;
-    ground.position = (Vector2)position;
     ground.texture = LoadTexture(texture);
-    ground.body = CreatePhysicsBodyRectangle(position, width, height, density);
+    ground.position = (Vector2){ position.x + ground.texture.width / 2 + 100.0f, position.y - ground.texture.height / 2 - 40.0f };
+    ground.body = CreatePhysicsBodyRectangle(ground.position, width, height, density);
 
     return ground;
 }
@@ -107,7 +108,19 @@ void UpdateGround()
 
 void DrawGround()
 {
-
+    for (int i = 0; i < 5; i++)
+    {
+        Rectangle sourceRec = { 0, 0, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height };
+        // Draw rotated texture based on the center of each ground object
+        DrawTexturePro(
+            pGrounds[i]->texture,
+            sourceRec,
+            (Rectangle){ pGrounds[i]->position.x, pGrounds[i]->position.y, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height },
+            (Vector2){ (float)pGrounds[i]->texture.width / 2, (float)pGrounds[i]->texture.height / 2 }, // Rotation point at the center
+            groundRotation * 57.295f,
+            WHITE
+        );
+    }
 }
 
 void DrawFloor()

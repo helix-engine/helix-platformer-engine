@@ -45,7 +45,7 @@ void AnimatePlayer(
     float scale, 
     float frameSpeed, 
     int numFrames, 
-    const bool animate)
+    bool animate)
 {
     player->source = (Rectangle){
         .x      = player->currentFrame * (float)player->texture.width / numFrames,
