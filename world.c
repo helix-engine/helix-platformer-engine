@@ -85,7 +85,6 @@ void InitGround()
 Floor CreateFloor(const char* texture, Vector2 position, float width, float height, float density)
 {
     Floor floor;
-    floor.position = (Vector2)position;
     floor.texture = LoadTexture(texture);
     floor.body = CreatePhysicsBodyRectangle(position, width, height, density);
 
@@ -96,8 +95,8 @@ Ground CreateGround(const char* texture, Vector2 position, float width, float he
 {
     Ground ground;
     ground.texture = LoadTexture(texture);
-    ground.position = (Vector2){ position.x + ground.texture.width / 2 + 100.0f, position.y - ground.texture.height / 2 - 40.0f };
-    ground.body = CreatePhysicsBodyRectangle(ground.position, width, height, density);
+    Vector2 bodyPosition = (Vector2){ position.x + ground.texture.width / 2 + 100.0f, position.y - ground.texture.height / 2 - 40.0f };
+    ground.body = CreatePhysicsBodyRectangle(bodyPosition, width, height, density);
 
     return ground;
 }
@@ -114,8 +113,6 @@ void UpdateGround()
                                 pGrounds[2]->body->position, 
                                 newGround3Pos, 
                                 0.1f);
-
-    pGrounds[2]->position = pGrounds[2]->body->position;
     
     // Set the physics body rotation
     for (int i = 0; i < 5; i++)
@@ -136,7 +133,7 @@ void DrawGround()
         DrawTexturePro(
             pGrounds[i]->texture,
             sourceRec,
-            (Rectangle){ pGrounds[i]->position.x, pGrounds[i]->position.y, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height },
+            (Rectangle){ pGrounds[i]->body->position.x, pGrounds[i]->body->position.y, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height },
             (Vector2){ (float)pGrounds[i]->texture.width / 2, (float)pGrounds[i]->texture.height / 2 }, // Rotation point at the center
             rotation * 57.295f,
             WHITE
@@ -150,7 +147,7 @@ void DrawFloor()
     {
         DrawTextureV(
             pFloors[i]->texture, 
-            (Vector2){ pFloors[i]->position.x - 400.f, pFloors[i]->position.y - 50.f }, 
+            (Vector2){ pFloors[i]->body->position.x - 400.f, pFloors[i]->body->position.y - 50.f }, 
             WHITE);
     }
 }

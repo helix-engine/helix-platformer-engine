@@ -28,7 +28,6 @@ typedef struct Ground
 {
     Texture2D texture;
     PhysicsBody body;
-    Vector2 position;
     bool isRotated;
 } Ground;
 
@@ -36,7 +35,6 @@ typedef struct Floor
 {
     Texture2D texture;
     PhysicsBody body;
-    Vector2 position;
 } Floor;
 
 void InitGround();
