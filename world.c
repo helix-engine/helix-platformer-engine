@@ -20,7 +20,6 @@
 // distribution.
 
 #include "world.h"
-#include "raymath.h"
 
 bool drawVertex = true;
 
@@ -72,7 +71,12 @@ void InitGround()
     for (int i = 0; i < 5; i++)
     {
         pGrounds[i]->body->enabled = false;
+        pGrounds[i]->isRotated = true;
     }
+
+    pGrounds[0]->isRotated = false;
+    pGrounds[2]->isRotated = false;
+    pGrounds[4]->isRotated = false;
 }
 
 Floor CreateFloor(const char* texture, Vector2 position, float width, float height, float density)
@@ -102,7 +106,8 @@ void UpdateGround()
     // Set the physics body rotation
     for (int i = 0; i < 5; i++)
     {
-        SetPhysicsBodyRotation(pGrounds[i]->body, groundRotation);
+        const float rotation = (pGrounds[i]->isRotated) ? groundRotation : 0.0f;
+        SetPhysicsBodyRotation(pGrounds[i]->body, rotation);
     }
 }
 
@@ -110,14 +115,16 @@ void DrawGround()
 {
     for (int i = 0; i < 5; i++)
     {
+        const float rotation = (pGrounds[i]->isRotated) ? groundRotation : 0.0f;
         Rectangle sourceRec = { 0, 0, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height };
+        
         // Draw rotated texture based on the center of each ground object
         DrawTexturePro(
             pGrounds[i]->texture,
             sourceRec,
             (Rectangle){ pGrounds[i]->position.x, pGrounds[i]->position.y, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height },
             (Vector2){ (float)pGrounds[i]->texture.width / 2, (float)pGrounds[i]->texture.height / 2 }, // Rotation point at the center
-            groundRotation * 57.295f,
+            rotation * 57.295f,
             WHITE
         );
     }
