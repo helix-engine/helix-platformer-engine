@@ -25,8 +25,11 @@ bool drawVertex = true;
 
 Floor* pFloors[6] = {};
 Ground* pGrounds[5] = {};
+Vector2 newGround3Pos = {};
 Texture2D mainBackgroundTexture = {};
 float groundRotation = 0.0f;
+float amplitude = 50.0f;
+float frequency = 2.0f;
 
 void InitGround()
 {
@@ -102,6 +105,17 @@ Ground CreateGround(const char* texture, Vector2 position, float width, float he
 void UpdateGround()
 {
     groundRotation += 0.01f;
+
+    // Update
+    // Oscillating motion for the ground using lerp
+    newGround3Pos = (Vector2){ pGrounds[2]->body->position.x, pGrounds[2]->body->position.y + amplitude * sinf(GetTime() * frequency) };
+
+    pGrounds[2]->body->position = Vector2Lerp( // Adjust the interpolation factor for smoother motion
+                                pGrounds[2]->body->position, 
+                                newGround3Pos, 
+                                0.1f);
+
+    pGrounds[2]->position = pGrounds[2]->body->position;
     
     // Set the physics body rotation
     for (int i = 0; i < 5; i++)
@@ -117,7 +131,7 @@ void DrawGround()
     {
         const float rotation = (pGrounds[i]->isRotated) ? groundRotation : 0.0f;
         Rectangle sourceRec = { 0, 0, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height };
-        
+
         // Draw rotated texture based on the center of each ground object
         DrawTexturePro(
             pGrounds[i]->texture,
