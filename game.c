@@ -36,10 +36,13 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "2D Platformer");
     InitBackground();
     InitPhysics();
-    InitGround();
+    InitWorld();
 
     Player player = CreatePlayer((Vector2){ screenWidth / 2.0f, screenHeight / 2.0f }, "robo.png");
     Camera2D camera = CreateCamera2D();
+
+    CheckBox isDrawWorldVertex  = CreateCheckBox();
+    CheckBox isDrawWorldTexture = CreateCheckBox();
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -49,10 +52,11 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        UpdatePhysics();                                // Update physics system
-        UpdatePlayer(&player);                          // Update player
-        UpdateCamera2D(&camera, player.position);       // Update camera
-        UpdateGround();
+        UpdatePhysics();                                                // Update physics system
+        UpdatePlayer(&player);                                          // Update player
+        UpdateCamera2D(&camera, player.position);                       // Update camera
+        UpdateGround();                                                 // Update ground
+        UpdateWorld(isDrawWorldVertex.flag, isDrawWorldTexture.flag);   // Update world
 
         // Check if the player falls
         if (player.position.y > FALL_THRESHOLD)
@@ -71,10 +75,11 @@ int main(void)
             DrawBackground();
 
             DrawFPS(0, 0);
+            DrawCheckBox(&isDrawWorldVertex,  "Draw World Vertex",  (Vector2){ 5.0f, 50.0f }, 20);
+            DrawCheckBox(&isDrawWorldTexture, "Draw World Texture", (Vector2){ 5.0f, 90.0f }, 20);
             BeginMode2D(camera);
-                DrawFloor();
-                DrawGround();
-                Draw2DWorldVertex();
+                DrawWorldTexture();
+                DrawWorldVertex();
                 DrawPlayer(&player);
             EndMode2D();
 

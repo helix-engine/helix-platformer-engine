@@ -21,17 +21,17 @@
 
 #include "world.h"
 
-bool drawVertex = true;
-
 Floor* pFloors[6] = {};
 Ground* pGrounds[5] = {};
 Vector2 newGround3Pos = {};
+bool drawWorldTexture = true;
 Texture2D mainBackgroundTexture = {};
 float groundRotation = 0.0f;
+bool drawWorlVertex = true;
 float amplitude = 50.0f;
 float frequency = 2.0f;
 
-void InitGround()
+void InitWorld()
 {
     const float screenWidth  = GetScreenWidth();
     const float screenHeight = GetScreenHeight();
@@ -44,7 +44,7 @@ void InitGround()
     pFloors[4] = (Floor*)malloc(sizeof(Floor));
     pFloors[5] = (Floor*)malloc(sizeof(Floor));
 
-    *pFloors[0] = CreateFloor("floor.png", (Vector2){screenWidth / 2.0f, (float)screenHeight}, (float)screenWidth, 100, 10);
+    *pFloors[0] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f, (float)screenHeight }, (float)screenWidth, 100, 10);
     *pFloors[1] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 2 + 600.0f, (float)screenHeight }, (float)screenWidth, 100, 10);
     *pFloors[2] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 3 + 600.0f * 2, (float)screenHeight }, (float)screenWidth, 100, 10);
     *pFloors[3] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 4 + 600.0f * 3, (float)screenHeight }, (float)screenWidth, 100, 10);
@@ -162,11 +162,18 @@ void DeleteGround(Ground* ground)
     UnloadTexture(ground->texture);
 }
 
-void Draw2DWorldVertex()
+void DrawWorldTexture()
 {
-    if (IsKeyPressed(KEY_G)) drawVertex = !drawVertex;
-    
-    if (drawVertex)
+    if (drawWorldTexture)
+    {
+        DrawGround();
+        DrawFloor();
+    }
+}
+
+void DrawWorldVertex()
+{
+    if (drawWorlVertex)
     {
         // Draw created physics bodies
         int bodiesCount = GetPhysicsBodiesCount();
@@ -221,4 +228,10 @@ void DrawBackground()
 void CleanBackground()
 {
     UnloadTexture(mainBackgroundTexture);
+}
+
+void UpdateWorld(bool drawVertex, bool drawTexture)
+{
+    drawWorlVertex = drawVertex;
+    drawWorldTexture = drawTexture;
 }

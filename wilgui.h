@@ -20,34 +20,10 @@
 // distribution.
 
 #include "raylib.h"
-#include "stdlib.h"
-#include "raymath.h"
-#include "extras/physac.h"
 
-typedef struct Ground
-{
-    Texture2D texture;
-    PhysicsBody body;
-    bool isRotated;
-} Ground;
+typedef struct CheckBox { 
+    bool flag; 
+} CheckBox;
 
-typedef struct Floor
-{
-    Texture2D texture;
-    PhysicsBody body;
-} Floor;
-
-void InitWorld();
-void DrawFloor();
-void DrawGround();
-void UpdateGround();
-void CleanupFloor();
-void CleanupGround();
-void InitBackground();
-void DrawBackground();
-void CleanBackground();
-void DrawWorldVertex();
-void DrawWorldTexture();
-void UpdateWorld(bool drawVertex, bool drawTexture);
-Floor CreateFloor(const char* texture, Vector2 position, float width, float height, float density);
-Ground CreateGround(const char* texture, Vector2 position, float width, float height, float density);
+CheckBox CreateCheckBox();
+bool DrawCheckBox(CheckBox* target, const char* text, Vector2 position, float size);

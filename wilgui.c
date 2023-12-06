@@ -19,35 +19,36 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "raylib.h"
-#include "stdlib.h"
-#include "raymath.h"
-#include "extras/physac.h"
+#include "wilgui.h"
 
-typedef struct Ground
+CheckBox CreateCheckBox()
 {
-    Texture2D texture;
-    PhysicsBody body;
-    bool isRotated;
-} Ground;
+    CheckBox checkBox;
+    checkBox.flag = true;
+    
+    return checkBox; 
+}
 
-typedef struct Floor
+bool DrawCheckBox(CheckBox* target, const char* text, Vector2 position, float size)
 {
-    Texture2D texture;
-    PhysicsBody body;
-} Floor;
+    Rectangle recBox = { position.x, position.y, size, size };
 
-void InitWorld();
-void DrawFloor();
-void DrawGround();
-void UpdateGround();
-void CleanupFloor();
-void CleanupGround();
-void InitBackground();
-void DrawBackground();
-void CleanBackground();
-void DrawWorldVertex();
-void DrawWorldTexture();
-void UpdateWorld(bool drawVertex, bool drawTexture);
-Floor CreateFloor(const char* texture, Vector2 position, float width, float height, float density);
-Ground CreateGround(const char* texture, Vector2 position, float width, float height, float density);
+    Vector2 mousePosition = GetMousePosition();
+    bool isMouseOver = CheckCollisionPointRec(mousePosition, recBox);
+
+    if (isMouseOver && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        target->flag = !target->flag;
+    }
+
+    if (target->flag)
+    {
+        DrawRectangleRec(recBox, GRAY);
+    }
+
+    DrawRectangleLinesEx(recBox, 3, BLACK);
+
+    const int fontSize = size / 3;
+
+    DrawText(text, position.x + 30, position.y + 10, fontSize, BLACK);
+}
