@@ -55,8 +55,8 @@ void AnimatePlayer(
     };
 
     player->dest = (Rectangle){
-        .x      = player->position.x - 30.0f, 
-        .y      = player->position.y - 30.0f,
+        .x      = player->body->position.x - 30.0f, 
+        .y      = player->body->position.y - 30.0f,
         .width  = scale * (float)player->texture.width / numFrames,
         .height = scale * (float)player->texture.height
     };
@@ -81,8 +81,6 @@ void AnimatePlayer(
 
 void UpdatePlayer(Player* player)
 {
-    player->position = player->body->position;
-
     AnimatePlayer(player, 4.0f, 6.0f, 2, (GetInputMovement() != 0));
 
     if (IsKeyDown(KEY_LEFT_SHIFT)) player->speed = 0.45f;
@@ -109,6 +107,8 @@ void UpdatePlayer(Player* player)
     {
         player->body->velocity.y = (GetInputMovement() != 0) ? -jumpSpeed * 6 : -jumpSpeed * 4;
     }
+
+    PhysicsAddForce(player->body, (Vector2){0.0f, 9.8f * player->gravityScale});
 }
 
 void DrawPlayer(const Player* player)
@@ -132,7 +132,9 @@ Player CreatePlayer(Vector2 position, const char* texture)
     player.body = CreatePhysicsBodyRectangle(position, 50, 50, 1);
     player.body->freezeOrient = true; // Constrain body
     player.body->position = position;
+    player.body->mass = 2.0f;
     player.texture = LoadTexture(texture);
+    player.gravityScale = 14.0f;
 
     return player;
 }

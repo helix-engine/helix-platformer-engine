@@ -12,6 +12,7 @@
 		"player.h": "c",
 		"basic_io.h": "c",
 		"physac.h": "c",
-		"cmath": "c"
+		"cmath": "c",
+		"*.m": "c"
 	}
 }

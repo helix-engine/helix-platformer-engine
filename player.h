@@ -28,10 +28,10 @@ typedef struct Player {
     float speed;
     float facing;
     float currentFrame;
+    float gravityScale;
     Rectangle dest;
     Rectangle source;
     Texture2D texture;
-    Vector2 position;
     PhysicsBody body;
 } Player;
 

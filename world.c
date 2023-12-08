@@ -21,8 +21,8 @@
 
 #include "world.h"
 
-Floor* pFloors[6] = {};
-Ground* pGrounds[5] = {};
+Floor* pFloors[2] = {};
+Ground* pGrounds[2] = {};
 Vector2 newGround3Pos = {};
 bool drawWorldTexture = true;
 Texture2D mainBackgroundTexture = {};
@@ -39,47 +39,47 @@ void InitWorld()
     // Allocate memory for each floor
     pFloors[0] = (Floor*)malloc(sizeof(Floor));
     pFloors[1] = (Floor*)malloc(sizeof(Floor));
-    pFloors[2] = (Floor*)malloc(sizeof(Floor));
-    pFloors[3] = (Floor*)malloc(sizeof(Floor));
-    pFloors[4] = (Floor*)malloc(sizeof(Floor));
-    pFloors[5] = (Floor*)malloc(sizeof(Floor));
+    // pFloors[2] = (Floor*)malloc(sizeof(Floor));
+    // pFloors[3] = (Floor*)malloc(sizeof(Floor));
+    // pFloors[4] = (Floor*)malloc(sizeof(Floor));
+    // pFloors[5] = (Floor*)malloc(sizeof(Floor));
 
     *pFloors[0] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f, (float)screenHeight }, (float)screenWidth, 100, 10);
     *pFloors[1] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 2 + 600.0f, (float)screenHeight }, (float)screenWidth, 100, 10);
-    *pFloors[2] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 3 + 600.0f * 2, (float)screenHeight }, (float)screenWidth, 100, 10);
-    *pFloors[3] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 4 + 600.0f * 3, (float)screenHeight }, (float)screenWidth, 100, 10);
-    *pFloors[4] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 5 + 600.0f * 4, (float)screenHeight }, (float)screenWidth, 100, 10);
-    *pFloors[5] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 6 + 600.0f * 5, (float)screenHeight }, (float)screenWidth, 100, 10);
+    // *pFloors[2] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 3 + 600.0f * 2, (float)screenHeight }, (float)screenWidth, 100, 10);
+    // *pFloors[3] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 4 + 600.0f * 3, (float)screenHeight }, (float)screenWidth, 100, 10);
+    // *pFloors[4] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 5 + 600.0f * 4, (float)screenHeight }, (float)screenWidth, 100, 10);
+    // *pFloors[5] = CreateFloor("floor.png", (Vector2){ screenWidth / 2.0f * 6 + 600.0f * 5, (float)screenHeight }, (float)screenWidth, 100, 10);
 
     // Allocate memory for each ground
     pGrounds[0] = (Ground*)malloc(sizeof(Ground));
     pGrounds[1] = (Ground*)malloc(sizeof(Ground));
-    pGrounds[2] = (Ground*)malloc(sizeof(Ground));
-    pGrounds[3] = (Ground*)malloc(sizeof(Ground));
-    pGrounds[4] = (Ground*)malloc(sizeof(Ground));
+    // pGrounds[2] = (Ground*)malloc(sizeof(Ground));
+    // pGrounds[3] = (Ground*)malloc(sizeof(Ground));
+    // pGrounds[4] = (Ground*)malloc(sizeof(Ground));
 
     *pGrounds[0] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f, screenHeight * 0.6f }, screenWidth * 0.25f, 10, 10);
     *pGrounds[1] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f, screenHeight * 0.5f }, screenWidth * 0.25f, 10, 10);
-    *pGrounds[2] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 3, screenHeight * 0.3f }, screenWidth * 0.25f, 10, 10);
-    *pGrounds[3] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 4, screenHeight * 0.6f}, screenWidth * 0.25f, 10, 10);
-    *pGrounds[4] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 5, screenHeight * 0.6f }, screenWidth * 0.25f, 10, 10);
+    // *pGrounds[2] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 3, screenHeight * 0.5f }, screenWidth * 0.25f, 10, 10);
+    // *pGrounds[3] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 4, screenHeight * 0.6f}, screenWidth * 0.25f, 10, 10);
+    // *pGrounds[4] = CreateGround("ground.png", (Vector2){ screenWidth * 0.25f + 600.0f * 5, screenHeight * 0.6f }, screenWidth * 0.25f, 10, 10);
 
     // Disable dynamics for floor physics bodies
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 2; i++)
     {
         pFloors[i]->body->enabled = false;
     }
 
     // Disable dynamics for ground physics bodies
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 2; i++)
     {
         pGrounds[i]->body->enabled = false;
         pGrounds[i]->isRotated = true;
     }
 
-    pGrounds[0]->isRotated = false;
-    pGrounds[2]->isRotated = false;
-    pGrounds[4]->isRotated = false;
+    // pGrounds[0]->isRotated = false;
+    // pGrounds[2]->isRotated = false;
+    // pGrounds[4]->isRotated = false;
 }
 
 Floor CreateFloor(const char* texture, Vector2 position, float width, float height, float density)
@@ -124,7 +124,7 @@ void UpdateGround()
 
 void DrawGround()
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 2; i++)
     {
         const float rotation = (pGrounds[i]->isRotated) ? groundRotation : 0.0f;
         Rectangle sourceRec = { 0, 0, (float)pGrounds[i]->texture.width, (float)pGrounds[i]->texture.height };
@@ -143,7 +143,7 @@ void DrawGround()
 
 void DrawFloor()
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 2; i++)
     {
         DrawTextureV(
             pFloors[i]->texture, 
@@ -199,7 +199,7 @@ void DrawWorldVertex()
 
 void CleanupFloor()
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 2; i++)
     {
         UnloadTexture(pFloors[i]->texture);
         free(pFloors[i]);
@@ -208,7 +208,7 @@ void CleanupFloor()
 
 void CleanupGround()
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 2; i++)
     {
         UnloadTexture(pGrounds[i]->texture);
         free(pGrounds[i]);

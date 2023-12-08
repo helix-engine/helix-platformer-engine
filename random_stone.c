@@ -20,11 +20,9 @@
 // distribution.
 
 #include "random_stone.h"
-#include "bullet.h"
-#include "wilgui.h"
-#include "camera.h"
-#include "player.h"
-#include "world.h"
 
-const int screenWidth  = 800;
-const int screenHeight = 450;
+void InitRandomStone()
+{
+    PhysicsBody circle = CreatePhysicsBodyCircle((Vector2){ GetScreenWidth() / 2, GetScreenHeight() / 2 }, 45, 10);
+    circle->enabled = true;
+}

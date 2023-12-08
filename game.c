@@ -34,9 +34,13 @@ int main(void)
 
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(screenWidth, screenHeight, "2D Platformer");
+    InitRandomStone();
     InitBackground();
     InitPhysics();
+    InitBullet();
     InitWorld();
+
+    SetPhysicsGravity(0.0f, 0.2f); // Adjust the magnitude
 
     Player player = CreatePlayer((Vector2){ screenWidth / 2.0f, screenHeight / 2.0f }, "robo.png");
     Camera2D camera = CreateCamera2D();
@@ -54,12 +58,13 @@ int main(void)
         //----------------------------------------------------------------------------------
         UpdatePhysics();                                                // Update physics system
         UpdatePlayer(&player);                                          // Update player
-        UpdateCamera2D(&camera, player.position);                       // Update camera
-        UpdateGround();                                                 // Update ground
+        UpdateCamera2D(&camera, player.body->position);                       // Update camera
+        //UpdateGround();                                                 // Update ground
         UpdateWorld(isDrawWorldVertex.flag, isDrawWorldTexture.flag);   // Update world
+        UpdateAndSpawnBullet(player.body->position, player.facing);
 
         // Check if the player falls
-        if (player.position.y > FALL_THRESHOLD)
+        if (player.body->position.y > FALL_THRESHOLD)
         {
             // Reset player position
             player.body->position = (Vector2){ player.body->position.x - 200.0f, -1000.0f };

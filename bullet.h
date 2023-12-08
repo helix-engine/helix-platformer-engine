@@ -19,12 +19,16 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "random_stone.h"
-#include "bullet.h"
-#include "wilgui.h"
-#include "camera.h"
-#include "player.h"
-#include "world.h"
+#include "raylib.h"
+#include "stdlib.h"
+#include "basic_io.h"
+#include "extras/physac.h"
 
-const int screenWidth  = 800;
-const int screenHeight = 450;
+typedef struct Bullet
+{
+    PhysicsBody body;
+    float lifetime;
+} Bullet;
+
+void InitBullet();
+void UpdateAndSpawnBullet(Vector2 position, float directionX);
