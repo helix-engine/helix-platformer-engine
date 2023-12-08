@@ -44,11 +44,6 @@ Bullet* GetNextBullet()
     return NULL;  // Pool is exhausted
 }
 
-void ResetBullet() 
-{
-    bulletCount = 0;
-}
-
 void UpdateAndSpawnBullet(Vector2 position, float directionX) 
 {
     // PrintI(bulletCount, 1);
@@ -73,7 +68,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
             i--; // Check the current index again since it's now a different bullet
         }
     }
-    
+
     // Spawn new bullets
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bulletCount < 3) 
     {
