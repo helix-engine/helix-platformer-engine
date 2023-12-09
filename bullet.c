@@ -48,7 +48,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
 {
     // PrintI(bulletCount, 1);
 
-    float dx =(directionX == -1.0f) ? position.x + 10.0f : position.x - 10.0f;
+    float dx = (directionX == -1.0f) ? position.x + 10.0f : position.x - 10.0f;
     float dy = position.y - 30.0f;
 
     for (int i = 0; i < bulletCount; i++) 
@@ -70,7 +70,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
     }
 
     // Spawn new bullets
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bulletCount < 3) 
+    if (IsKeyPressed(KEY_C) && bulletCount < MAX_BULLETS) 
     {
         Bullet* newBullet = GetNextBullet();
         if (newBullet != NULL) 
