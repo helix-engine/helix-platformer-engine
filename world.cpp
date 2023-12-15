@@ -31,25 +31,31 @@ float frequency = 2.0f;
 
 int numFloors = 0; // Variable to keep track of the number of colliding objects
 
-Rectangle floorRecData[MAX_COLLIDERS];
+Rectangle floorRecData[MAX_FLOORS];
 
-std::shared_ptr<Floor> pFloors[MAX_COLLIDERS] = {};
+std::shared_ptr<Floor> pFloors[MAX_FLOORS] = {};
 
 void InitWorld()
 {
     const float screenHeight = GetScreenHeight();
 
-    for (int i = 0; i < MAX_COLLIDERS; i++)
+    for (int i = 0; i < MAX_FLOORS; i++)
     {
         pFloors[i] = nullptr;
     }
 
-    floorRecData[0] = (Rectangle){ 200.0f * 1,              (float)screenHeight, 450.0f, 100.0f };
-    floorRecData[1] = (Rectangle){ 200.0f * 2 + 350.0f * 1, (float)screenHeight, 450.0f, 100.0f };
-    floorRecData[2] = (Rectangle){ 200.0f * 3 + 350.0f * 2, (float)screenHeight, 450.0f, 100.0f };
-    floorRecData[3] = (Rectangle){ 200.0f * 4 + 350.0f * 3, (float)screenHeight, 450.0f, 100.0f };
-    floorRecData[4] = (Rectangle){ 200.0f * 5 + 350.0f * 4, (float)screenHeight, 450.0f, 100.0f };
-    floorRecData[5] = (Rectangle){ 200.0f * 6 + 350.0f * 5, (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[0]  = (Rectangle){ 200.0f * 1,                (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[1]  = (Rectangle){ 200.0f * 2  + 350.0f * 1,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[2]  = (Rectangle){ 200.0f * 3  + 350.0f * 2,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[3]  = (Rectangle){ 200.0f * 4  + 350.0f * 3,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[4]  = (Rectangle){ 200.0f * 5  + 350.0f * 4,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[5]  = (Rectangle){ 200.0f * 6  + 350.0f * 5,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[6]  = (Rectangle){ 200.0f * 7  + 350.0f * 6,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[7]  = (Rectangle){ 200.0f * 8  + 350.0f * 7,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[8]  = (Rectangle){ 200.0f * 9  + 350.0f * 8,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[9]  = (Rectangle){ 200.0f * 10 + 350.0f * 9,  (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[10] = (Rectangle){ 200.0f * 11 + 350.0f * 11, (float)screenHeight, 450.0f, 100.0f };
+    floorRecData[11] = (Rectangle){ 200.0f * 12 + 350.0f * 12, (float)screenHeight, 450.0f, 100.0f };
 }
 
 void DrawFloor()
@@ -86,7 +92,7 @@ void DrawWorldVertex()
             }
         }
     }
-    DrawRectangleLinesEx(GetCameraRectangle(), 12, GREEN);
+    DrawRectangleLinesEx(GetCameraRectangle(), 2, GREEN);
 }
 
 void InitBackground()
@@ -109,7 +115,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture)
     // Reset the counter for each frame
     numFloors = 0;
 
-    for (int i = 0; i < MAX_COLLIDERS; i++)
+    for (int i = 0; i < MAX_FLOORS; i++)
     {
         if (CheckCollisionRecs(GetCameraRectangle(), floorRecData[i]))
         {

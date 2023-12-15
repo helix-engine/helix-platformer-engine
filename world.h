@@ -27,7 +27,7 @@
 #include "raymath.h"
 #include "extras/physac.h"
 
-#define MAX_COLLIDERS 6
+#define MAX_FLOORS 12
 
 struct Floor
 {
