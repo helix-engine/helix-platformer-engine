@@ -103,7 +103,8 @@ void UpdatePlayer(Player* player)
     // PrintS(BoolToString(GetInputMovement() != 0), 1);
 
     // Vertical movement input checking if player physics body is grounded
-    if (IsKeyDown(KEY_SPACE) && player->body->isGrounded) 
+    // if (IsKeyDown(KEY_SPACE) && player->body->isGrounded) -> the current system can't detect whether it's grounded or not
+    if (IsKeyDown(KEY_SPACE)) 
     {
         player->body->velocity.y = (GetInputMovement() != 0) ? -jumpSpeed * 6 : -jumpSpeed * 4;
     }

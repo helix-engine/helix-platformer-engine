@@ -96,8 +96,6 @@ int main(void)
     //--------------------------------------------------------------------------------------
     DeletePlayer(&player);  // Delete the player
     CleanBackground();      // Clean the background
-    CleanupFloor();         // Clean the floor
-    CleanupGround();        // Clean the ground
     ClosePhysics();         // Unitialize physics
     CloseWindow();          // Close window and OpenGL context
     //--------------------------------------------------------------------------------------

@@ -19,35 +19,34 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
+#include <iostream>
+#include <memory>
 #include "raylib.h"
 #include "stdlib.h"
+#include "camera.h"
 #include "raymath.h"
 #include "extras/physac.h"
 
-typedef struct Ground
-{
-    Texture2D texture;
-    PhysicsBody body;
-    bool isRotated;
-} Ground;
+#define MAX_COLLIDERS 6
 
-typedef struct Floor
+struct Floor
 {
-    Texture2D texture;
-    PhysicsBody body;
-} Floor;
+    inline ~Floor() 
+    { 
+        DestroyPhysicsBody(body);
+        // UnloadTexture(texture); 
+    }
+    
+    // Texture2D texture;
+    PhysicsBody body = nullptr;
+};
 
 void InitWorld();
 void DrawFloor();
-void DrawGround();
 void UpdateGround();
-void CleanupFloor();
-void CleanupGround();
 void InitBackground();
 void DrawBackground();
 void CleanBackground();
 void DrawWorldVertex();
 void DrawWorldTexture();
 void UpdateWorld(bool drawVertex, bool drawTexture);
-Floor CreateFloor(const char* texture, Vector2 position, float width, float height, float density);
-Ground CreateGround(const char* texture, Vector2 position, float width, float height, float density);
