@@ -19,33 +19,16 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include <memory>
 #include "raylib.h"
 #include "stdlib.h"
-#include "camera.h"
-#include "raymath.h"
+#include "basic_io.hpp"
 #include "extras/physac.h"
 
-#define MAX_GROUNDS 12
-
-struct Ground
+typedef struct Bullet
 {
-    inline ~Ground() 
-    { 
-        DestroyPhysicsBody(body);
-    }
+    PhysicsBody body;
+    float lifetime;
+} Bullet;
 
-    void Draw() const;
-
-    PhysicsBody body = nullptr;
-};
-
-void InitWorld();
-void UpdateGround();
-void InitBackground();
-void DrawBackground();
-void CleanBackground();
-void DrawWorldVertex();
-void DrawWorldTexture();
-void UpdateWorld(bool drawVertex, bool drawTexture);
-void DestroyWorld();
+void InitBullet();
+void UpdateAndSpawnBullet(Vector2 position, float directionX);

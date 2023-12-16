@@ -19,7 +19,7 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "player.h"
+#include "player.hpp"
 
 /* -> AnimatePlayer() */
 static int frameCounter = 0;

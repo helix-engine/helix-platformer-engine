@@ -19,7 +19,7 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "game.h"
+#include "game.hpp"
 
 // Define a threshold for falling below the screen
 #define FALL_THRESHOLD 5000.0f
@@ -58,8 +58,8 @@ int main(void)
         //----------------------------------------------------------------------------------
         UpdatePhysics();                                                // Update physics system
         UpdatePlayer(&player);                                          // Update player
-        UpdateCamera2D(&camera, player.body->position);                       // Update camera
-        //UpdateGround();                                                 // Update ground
+        UpdateCamera2D(&camera, player.body->position);                 // Update camera
+        //UpdateGround();                                               // Update ground
         UpdateWorld(isDrawWorldVertex.flag, isDrawWorldTexture.flag);   // Update world
         UpdateAndSpawnBullet(player.body->position, player.facing);
 

@@ -21,7 +21,7 @@
 
 #include "raylib.h"
 #include "raymath.h"
-#include "basic_io.h"
+#include "basic_io.hpp"
 #include "extras/physac.h"
 
 typedef struct Player {

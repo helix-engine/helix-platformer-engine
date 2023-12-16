@@ -19,7 +19,7 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "bullet.h"
+#include "bullet.hpp"
 
 #define MAX_BULLETS 5
 

@@ -19,9 +19,9 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "camera.h"
+#include "camera.hpp"
 
-Camera2D* pCamera;
+Camera2D* pCamera = nullptr;
 
 Camera2D CreateCamera2D()
 {

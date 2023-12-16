@@ -19,7 +19,7 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "world.h"
+#include "world.hpp"
 
 Vector2 newGround3Pos = {};
 bool drawWorldTexture = true;
