@@ -19,7 +19,6 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include <iostream>
 #include <memory>
 #include "raylib.h"
 #include "stdlib.h"
@@ -27,22 +26,21 @@
 #include "raymath.h"
 #include "extras/physac.h"
 
-#define MAX_FLOORS 12
+#define MAX_GROUNDS 12
 
-struct Floor
+struct Ground
 {
-    inline ~Floor() 
+    inline ~Ground() 
     { 
         DestroyPhysicsBody(body);
-        // UnloadTexture(texture); 
     }
-    
-    // Texture2D texture;
+
+    void Draw() const;
+
     PhysicsBody body = nullptr;
 };
 
 void InitWorld();
-void DrawFloor();
 void UpdateGround();
 void InitBackground();
 void DrawBackground();
@@ -50,3 +48,4 @@ void CleanBackground();
 void DrawWorldVertex();
 void DrawWorldTexture();
 void UpdateWorld(bool drawVertex, bool drawTexture);
+void DestroyWorld();

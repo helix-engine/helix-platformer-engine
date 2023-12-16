@@ -42,7 +42,7 @@ int main(void)
 
     SetPhysicsGravity(0.0f, 0.2f); // Adjust the magnitude
 
-    Player player = CreatePlayer((Vector2){ screenWidth / 2.0f, screenHeight / 2.0f }, "robo.png");
+    Player player = CreatePlayer((Vector2){ screenWidth / 2.0f, screenHeight / 2.0f }, "resources/robo.png");
     Camera2D camera = CreateCamera2D();
 
     CheckBox isDrawWorldVertex  = CreateCheckBox();
@@ -78,7 +78,6 @@ int main(void)
 
             ClearBackground(BLACK);
             DrawBackground();
-
             DrawFPS(0, 0);
             DrawCheckBox(&isDrawWorldVertex,  "Draw World Vertex",  (Vector2){ 5.0f, 50.0f }, 20);
             DrawCheckBox(&isDrawWorldTexture, "Draw World Texture", (Vector2){ 5.0f, 90.0f }, 20);
@@ -97,6 +96,7 @@ int main(void)
     DeletePlayer(&player);  // Delete the player
     CleanBackground();      // Clean the background
     ClosePhysics();         // Unitialize physics
+    DestroyWorld();         // Destroy World
     CloseWindow();          // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

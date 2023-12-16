@@ -29,31 +29,26 @@ bool drawWorlVertex = true;
 float amplitude = 50.0f;
 float frequency = 2.0f;
 
-int numFloors = 0; // Variable to keep track of the number of colliding objects
+int numGrounds = 0; // Variable to keep track of the number of colliding objects
 
-Rectangle floorRecData[MAX_FLOORS];
+Rectangle groundRecData[MAX_GROUNDS];
 
-std::shared_ptr<Floor> pFloors[MAX_FLOORS] = {};
+std::shared_ptr<Ground> pGrounds[MAX_GROUNDS] = {};
+
+Texture2D groundTexture;
 
 void InitWorld()
 {
-    const float screenHeight = GetScreenHeight();
+    const float width = 800.0f;
+    const float height = 450.0f;
 
-    for (int i = 0; i < MAX_FLOORS; i++)
+    groundTexture = LoadTexture("resources/ground.png");
+
+    for (int i = 0; i < MAX_GROUNDS; i++)
     {
-        pFloors[i] = nullptr;
-        floorRecData[i] =  (Rectangle){ 200.0f * i + 1 + 350.0f * i, (float)screenHeight, 450.0f, 100.0f };
+        pGrounds[i] = nullptr;
+        groundRecData[i] = (Rectangle){ width / 2 * (i + 1) + 600.0f * i, height, width, 100.0f };
     }
-}
-
-void DrawFloor()
-{
-
-}
-
-void DrawWorldTexture()
-{
-
 }
 
 void DrawWorldVertex()
@@ -85,12 +80,15 @@ void DrawWorldVertex()
 
 void InitBackground()
 {
-    mainBackgroundTexture = LoadTexture("background0.png");
+    mainBackgroundTexture = LoadTexture("resources/background0.png");
 }
 
 void DrawBackground()
 {
-    DrawTextureEx(mainBackgroundTexture, {}, 0.0f, 0.5f, WHITE);
+    if (drawWorldTexture)
+    {
+        DrawTextureEx(mainBackgroundTexture, {}, 0.0f, 0.5f, WHITE);
+    }
 }
 
 void CleanBackground()
@@ -101,37 +99,73 @@ void CleanBackground()
 void UpdateWorld(bool drawVertex, bool drawTexture)
 {
     // Reset the counter for each frame
-    numFloors = 0;
+    numGrounds = 0;
 
-    for (int i = 0; i < MAX_FLOORS; i++)
+    for (int i = 0; i < MAX_GROUNDS; i++)
     {
-        if (CheckCollisionRecs(GetCameraRectangle(), floorRecData[i]))
+        Rectangle inViewRec = { 
+            GetCameraRectangle().x, 
+            GetCameraRectangle().y, 
+            GetCameraRectangle().width  * 2, 
+            GetCameraRectangle().height * 2 
+            };
+        if (CheckCollisionRecs(inViewRec, groundRecData[i]))
         {
             // Collision detected, store the colliding object on the heap
-            auto newObject = std::make_shared<Floor>();  
+            auto newObject = std::make_shared<Ground>();  
             
             // Store the data
             newObject->body = CreatePhysicsBodyRectangle(
-                (Vector2){ floorRecData[i].x, floorRecData[i].y }, 
-                floorRecData[i].width, 
-                floorRecData[i].height, 10
+                (Vector2){ groundRecData[i].x, groundRecData[i].y }, 
+                groundRecData[i].width, 
+                groundRecData[i].height, 10
             ); 
             newObject->body->enabled = false;
-            pFloors[numFloors] = newObject;
-            numFloors++;
+            pGrounds[numGrounds] = newObject;
+            numGrounds++;
         }
         else 
         {
             // No collision, delete the physics body and reset the pointer
-            if (pFloors[i] != nullptr)
+            if (pGrounds[i] != nullptr)
             {
-                pFloors[i].reset();
+                pGrounds[i].reset();
             }
         }
     }
 
-    std::cout << numFloors << std::endl;
-
     drawWorlVertex = drawVertex;
     drawWorldTexture = drawTexture;
+}
+
+void DrawGroundTexture(Vector2 position)
+{
+    DrawTextureV(
+        groundTexture, 
+        position,
+        WHITE);
+}
+
+void Ground::Draw() const
+{
+    DrawGroundTexture((Vector2){ body->position.x - 400.f, body->position.y - 50.f });
+}
+
+void DrawWorldTexture()
+{
+    if (drawWorldTexture)
+    {
+        for (const auto& ground : pGrounds)
+        {
+            if (ground != nullptr)
+            {
+                ground->Draw();
+            }
+        }
+    }
+}
+
+void DestroyWorld()
+{
+    UnloadTexture(groundTexture);
 }
