@@ -31,6 +31,19 @@
 
 struct Ground
 {
+    inline Ground(Vector2 position, float width, float height)
+    {
+        body = CreatePhysicsBodyRectangle(
+            position, 
+            width, 
+            height, 
+            1
+        );
+
+        body->enabled = false;
+        body->force.x = 10.0f;
+    }
+
     inline ~Ground() 
     { 
         DestroyPhysicsBody(body);
@@ -43,6 +56,19 @@ struct Ground
 
 struct Steel
 {
+    inline Steel(Vector2 position, float width, float height)
+    {
+        body = CreatePhysicsBodyRectangle(
+            position, 
+            width, 
+            height, 
+            1
+        );
+
+        body->enabled = false;
+        body->force.x = 10.0f;
+    }
+
     inline ~Steel() 
     { 
         DestroyPhysicsBody(body);
@@ -54,11 +80,14 @@ struct Steel
 };
 
 void InitWorld();
-void UpdateGround();
 void InitBackground();
 void DrawBackground();
 void CleanBackground();
 void DrawWorldVertex();
 void DrawWorldTexture();
-void UpdateWorld(bool drawVertex, bool drawTexture);
+void UpdateWorld(
+    bool drawVertex, 
+    bool drawTexture, 
+    Rectangle playerRec);
 void DestroyWorld();
+bool IsPlayerGrounded();

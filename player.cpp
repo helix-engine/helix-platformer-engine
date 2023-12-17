@@ -79,7 +79,7 @@ void AnimatePlayer(
 /* ----------------------- Public Functions ----------------------- */
 /* ---------------------------------------------------------------- */
 
-void UpdatePlayer(Player* player)
+void UpdatePlayer(Player* player, bool isGrounded)
 {
     AnimatePlayer(player, 4.0f, 6.0f, 2, (GetInputMovement() != 0));
 
@@ -103,13 +103,14 @@ void UpdatePlayer(Player* player)
     // PrintS(BoolToString(GetInputMovement() != 0), 1);
 
     // Vertical movement input checking if player physics body is grounded
-    // if (IsKeyDown(KEY_SPACE) && player->body->isGrounded) -> the current system can't detect whether it's grounded or not
-    if (IsKeyDown(KEY_SPACE)) 
+    if (IsKeyDown(KEY_SPACE) && isGrounded)
     {
         player->body->velocity.y = (GetInputMovement() != 0) ? -jumpSpeed * 6 : -jumpSpeed * 4;
     }
 
-    PhysicsAddForce(player->body, (Vector2){0.0f, 9.8f * player->gravityScale});
+    PrintS(BoolToString(isGrounded), 1);
+
+    PhysicsAddForce(player->body, (Vector2){ 0.0f, 9.8f * player->gravityScale });
 }
 
 void DrawPlayer(const Player* player)
@@ -121,6 +122,11 @@ void DrawPlayer(const Player* player)
         Vector2Zero(),
         0.0f,
         WHITE);
+}
+
+Rectangle GetPlayerRectangle(const Player* player)
+{
+    return (Rectangle){ player->body->position.x, player->body->position.y, 50, 50 };
 }
 
 Player CreatePlayer(Vector2 position, const char* texture)

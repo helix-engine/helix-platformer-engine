@@ -28,18 +28,19 @@ float groundRotation = 0.0f;
 bool drawWorlVertex = true;
 float amplitude = 50.0f;
 float frequency = 2.0f;
+bool isGrounded = false;
 
-int numGrounds = 0; // Variable to keep track of the number of grounds objects
-int numSteels  = 0; // Variable to keep track of the number of steels objects
-
-Rectangle groundRecData[MAX_GROUNDS];
-Rectangle steelRecData[MAX_STEELS];
+int numGrounds = 0; // Variable to keep track of the number of ground objects
+int numSteels  = 0; // Variable to keep track of the number of steel objects
 
 std::shared_ptr<Ground> pGrounds[MAX_GROUNDS] = {};
 std::shared_ptr<Steel> pSteels[MAX_STEELS] = {};
 
 Texture2D groundTexture;
 Texture2D steelTexture;
+
+static Rectangle groundRecData[MAX_GROUNDS] = {};
+static Rectangle steelRecData[MAX_STEELS] = {};
 
 void InitWorld()
 {
@@ -86,7 +87,7 @@ void DrawWorldVertex()
             }
         }
     }
-    DrawRectangleLinesEx(GetCameraRectangle(), 2, GREEN);
+    // DrawRectangleLinesEx(GetCameraRectangle(), 2, GREEN);
 }
 
 void InitBackground()
@@ -107,7 +108,7 @@ void CleanBackground()
     UnloadTexture(mainBackgroundTexture);
 }
 
-void UpdateWorld(bool drawVertex, bool drawTexture)
+void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
 {
     // Reset the counter for each frame
     numGrounds = 0;
@@ -124,15 +125,11 @@ void UpdateWorld(bool drawVertex, bool drawTexture)
         if (CheckCollisionRecs(inViewRec, groundRecData[i]))
         {
             // Collision detected, store the colliding object on the heap
-            auto newObject = std::make_shared<Ground>();  
-            
-            // Store the data
-            newObject->body = CreatePhysicsBodyRectangle(
+            auto newObject = std::make_shared<Ground>(
                 (Vector2){ groundRecData[i].x, groundRecData[i].y }, 
-                groundRecData[i].width, 
-                groundRecData[i].height, 10
-            ); 
-            newObject->body->enabled = false;
+                groundRecData[i].width, groundRecData[i].height 
+            );
+
             pGrounds[numGrounds] = newObject;
             numGrounds++;
         }
@@ -157,15 +154,12 @@ void UpdateWorld(bool drawVertex, bool drawTexture)
         if (CheckCollisionRecs(inViewRec, steelRecData[i]))
         {
             // Collision detected, store the colliding object on the heap
-            auto newObject = std::make_shared<Steel>();  
-            
-            // Store the data
-            newObject->body = CreatePhysicsBodyRectangle(
+            auto newObject = std::make_shared<Steel>(
                 (Vector2){ steelRecData[i].x, steelRecData[i].y }, 
                 steelRecData[i].width, 
-                steelRecData[i].height, 10
-            ); 
-            newObject->body->enabled = false;
+                steelRecData[i].height
+            );
+
             pSteels[numSteels] = newObject;
             numSteels++;
         }
@@ -176,6 +170,33 @@ void UpdateWorld(bool drawVertex, bool drawTexture)
             {
                 pSteels[i].reset();
             }
+        }
+    }
+
+    isGrounded = false;
+    for (const auto& rec : groundRecData)
+    {
+        if (CheckCollisionRecs((Rectangle){ 
+            rec.x - 400.0f, 
+            rec.y - 50.0f, 
+            rec.width, 
+            rec.height }, 
+            playerRec))
+        {
+            isGrounded = true;
+        }
+    }
+
+    for (const auto& rec : steelRecData)
+    {
+        if (CheckCollisionRecs((Rectangle){ 
+            rec.x - 60, 
+            rec.y, 
+            rec.width, 
+            rec.height }, 
+            playerRec))
+        {
+            isGrounded = true;
         }
     }
 
@@ -239,4 +260,9 @@ void DestroyWorld()
 {
     UnloadTexture(groundTexture);
     UnloadTexture(steelTexture);
+}
+
+bool IsPlayerGrounded()
+{
+    return isGrounded;
 }

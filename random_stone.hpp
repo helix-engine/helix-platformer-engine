@@ -21,6 +21,7 @@
 
 #include "raylib.h"
 #include "stdlib.h"
+#include "basic_io.hpp"
 #include "extras/physac.h"
 
 typedef struct RandomStone

@@ -35,7 +35,8 @@ typedef struct Player {
     PhysicsBody body;
 } Player;
 
-void UpdatePlayer(Player* player);
+void UpdatePlayer(Player* player, bool isGrounded);
 void DeletePlayer(Player* player);
 void DrawPlayer(const Player* player);
+Rectangle GetPlayerRectangle(const Player* player);
 Player CreatePlayer(Vector2 position, const char* texture);

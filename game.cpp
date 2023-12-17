@@ -57,11 +57,15 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdatePhysics();                                                // Update physics system
-        UpdatePlayer(&player);                                          // Update player
+        UpdatePlayer(&player, IsPlayerGrounded());                                          // Update player
         UpdateCamera2D(&camera, player.body->position);                 // Update camera
-        //UpdateGround();                                               // Update ground
-        UpdateWorld(isDrawWorldVertex.flag, isDrawWorldTexture.flag);   // Update world
-        UpdateAndSpawnBullet(player.body->position, player.facing);
+        UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and bullet
+        
+        UpdateWorld(
+            isDrawWorldVertex.flag, 
+            isDrawWorldTexture.flag, 
+            GetPlayerRectangle(&player)
+        ); // Update world
 
         // Check if the player falls
         if (player.body->position.y > FALL_THRESHOLD)
@@ -71,6 +75,8 @@ int main(void)
 
             PrintS("Reset player position", 1);
         }
+
+        // PrintS(BoolToString(IsPlayerGrounded()), 1);
 
         // Draw
         //----------------------------------------------------------------------------------

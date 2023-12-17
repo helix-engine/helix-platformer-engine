@@ -67,6 +67,8 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
             (bulletCount)--;
             i--; // Check the current index again since it's now a different bullet
         }
+
+        // if (bullets[i].body != NULL) PrintS(BoolToString(bullets[i].body->isGrounded), 1);
     }
 
     // Spawn new bullets
