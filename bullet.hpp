@@ -31,4 +31,5 @@ typedef struct Bullet
 } Bullet;
 
 void InitBullet();
+void DrawBullet(Vector2 position, bool drawLine);
 void UpdateAndSpawnBullet(Vector2 position, float directionX);

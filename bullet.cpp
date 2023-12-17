@@ -86,3 +86,30 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
         }
     }
 }
+
+void DrawBullet(Vector2 position, bool drawLine)
+{
+    const Color colors[5] = { RED, GREEN, BLUE, BROWN, PURPLE };
+
+    if (bulletCount > 0)
+    {
+        for (int i = 0; i < bulletCount; i++) 
+        {
+            DrawCircle(
+                bullets[i].body->position.x, 
+                bullets[i].body->position.y, 8, 
+                colors[i]
+            );
+            if (drawLine)
+            {
+                DrawLine(
+                    position.x, 
+                    position.y, 
+                    bullets[i].body->position.x, 
+                    bullets[i].body->position.y, 
+                    colors[i]
+                );
+            } 
+        }
+    }
+}

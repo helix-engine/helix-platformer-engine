@@ -91,6 +91,7 @@ int main(void)
                 DrawWorldTexture();
                 DrawWorldVertex();
                 DrawPlayer(&player);
+                DrawBullet(player.body->position, false);
             EndMode2D();
 
         EndDrawing();
