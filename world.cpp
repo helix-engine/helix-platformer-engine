@@ -29,13 +29,17 @@ bool drawWorlVertex = true;
 float amplitude = 50.0f;
 float frequency = 2.0f;
 
-int numGrounds = 0; // Variable to keep track of the number of colliding objects
+int numGrounds = 0; // Variable to keep track of the number of grounds objects
+int numSteels  = 0; // Variable to keep track of the number of steels objects
 
 Rectangle groundRecData[MAX_GROUNDS];
+Rectangle steelRecData[MAX_STEELS];
 
 std::shared_ptr<Ground> pGrounds[MAX_GROUNDS] = {};
+std::shared_ptr<Steel> pSteels[MAX_STEELS] = {};
 
 Texture2D groundTexture;
+Texture2D steelTexture;
 
 void InitWorld()
 {
@@ -43,11 +47,18 @@ void InitWorld()
     const float height = 450.0f;
 
     groundTexture = LoadTexture("resources/ground.png");
+    steelTexture  = LoadTexture("resources/steel.png");
 
     for (int i = 0; i < MAX_GROUNDS; i++)
     {
         pGrounds[i] = nullptr;
         groundRecData[i] = (Rectangle){ width / 2 * (i + 1) + 600.0f * i, height, width, 100.0f };
+    }
+
+    for (int i = 0; i < MAX_STEELS; i++)
+    {
+        pSteels[i] = nullptr;
+        steelRecData[i] = (Rectangle){ width * 0.25f + 600.0f * i, height * (GetRandomValue(4, 7) * 0.1f), width * 0.25f, 10.0f };
     }
 }
 
@@ -100,6 +111,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture)
 {
     // Reset the counter for each frame
     numGrounds = 0;
+    numSteels  = 0;
 
     for (int i = 0; i < MAX_GROUNDS; i++)
     {
@@ -134,6 +146,39 @@ void UpdateWorld(bool drawVertex, bool drawTexture)
         }
     }
 
+    for (int i = 0; i < MAX_GROUNDS; i++)
+    {
+        Rectangle inViewRec = { 
+            GetCameraRectangle().x, 
+            GetCameraRectangle().y, 
+            GetCameraRectangle().width  * 2, 
+            GetCameraRectangle().height * 2 
+            };
+        if (CheckCollisionRecs(inViewRec, steelRecData[i]))
+        {
+            // Collision detected, store the colliding object on the heap
+            auto newObject = std::make_shared<Steel>();  
+            
+            // Store the data
+            newObject->body = CreatePhysicsBodyRectangle(
+                (Vector2){ steelRecData[i].x, steelRecData[i].y }, 
+                steelRecData[i].width, 
+                steelRecData[i].height, 10
+            ); 
+            newObject->body->enabled = false;
+            pSteels[numSteels] = newObject;
+            numSteels++;
+        }
+        else 
+        {
+            // No collision, delete the physics body and reset the pointer
+            if (pSteels[i] != nullptr)
+            {
+                pSteels[i].reset();
+            }
+        }
+    }
+
     drawWorlVertex = drawVertex;
     drawWorldTexture = drawTexture;
 }
@@ -146,9 +191,27 @@ void DrawGroundTexture(Vector2 position)
         WHITE);
 }
 
+void DrawSteelTexture(Vector2 position)
+{
+    Rectangle source = { 0, 0, (float)steelTexture.width, (float)steelTexture.height };
+    DrawTexturePro(
+        steelTexture,
+        source,
+        (Rectangle){ position.x, position.y, (float)steelTexture.width, (float)steelTexture.height },
+        (Vector2){ (float)steelTexture.width / 2, (float)steelTexture.height / 2 },
+        0.0f,
+        WHITE
+    );
+}
+
 void Ground::Draw() const
 {
     DrawGroundTexture((Vector2){ body->position.x - 400.f, body->position.y - 50.f });
+}
+
+void Steel::Draw() const
+{
+    DrawSteelTexture((Vector2){ body->position.x, body->position.y });
 }
 
 void DrawWorldTexture()
@@ -162,10 +225,18 @@ void DrawWorldTexture()
                 ground->Draw();
             }
         }
+        for (const auto& steel : pSteels)
+        {
+            if (steel != nullptr)
+            {
+                steel->Draw();
+            }
+        }
     }
 }
 
 void DestroyWorld()
 {
     UnloadTexture(groundTexture);
+    UnloadTexture(steelTexture);
 }

@@ -27,10 +27,23 @@
 #include "extras/physac.h"
 
 #define MAX_GROUNDS 12
+#define MAX_STEELS 12
 
 struct Ground
 {
     inline ~Ground() 
+    { 
+        DestroyPhysicsBody(body);
+    }
+
+    void Draw() const;
+
+    PhysicsBody body = nullptr;
+};
+
+struct Steel
+{
+    inline ~Steel() 
     { 
         DestroyPhysicsBody(body);
     }
