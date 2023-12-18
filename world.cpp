@@ -135,7 +135,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         }
         else 
         {
-            // No collision, delete the physics body and reset the pouint8_ter
+            // No collision, delete the physics body and reset the pointer
             if (pGrounds[i] != nullptr)
             {
                 pGrounds[i].reset();
@@ -165,7 +165,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         }
         else 
         {
-            // No collision, delete the physics body and reset the pouint8_ter
+            // No collision, delete the physics body and reset the pointer
             if (pSteels[i] != nullptr)
             {
                 pSteels[i].reset();
