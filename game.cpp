@@ -47,6 +47,7 @@ int main(void)
 
     CheckBox isDrawWorldVertex  = CreateCheckBox();
     CheckBox isDrawWorldTexture = CreateCheckBox();
+    CheckBox isDrawBulletLine   = CreateCheckBox();
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -57,7 +58,7 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdatePhysics();                                                // Update physics system
-        UpdatePlayer(&player, IsPlayerGrounded());                                          // Update player
+        UpdatePlayer(&player, IsPlayerGrounded());                      // Update player
         UpdateCamera2D(&camera, player.body->position);                 // Update camera
         UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and bullet
         
@@ -85,13 +86,14 @@ int main(void)
             ClearBackground(BLACK);
             DrawBackground();
             DrawFPS(0, 0);
-            DrawCheckBox(&isDrawWorldVertex,  "Draw World Vertex",  (Vector2){ 5.0f, 50.0f }, 20);
-            DrawCheckBox(&isDrawWorldTexture, "Draw World Texture", (Vector2){ 5.0f, 90.0f }, 20);
+            DrawCheckBox(&isDrawWorldVertex,  "Draw World Vertex",  (Vector2){ 5.0f, 50.0f + 40 * 0 }, 20);
+            DrawCheckBox(&isDrawWorldTexture, "Draw World Texture", (Vector2){ 5.0f, 50.0f + 40 * 1 }, 20);
+            DrawCheckBox(&isDrawBulletLine,   "Draw Bullet Line",   (Vector2){ 5.0f, 50.0f + 40 * 2 }, 20);
             BeginMode2D(camera);
                 DrawWorldTexture();
                 DrawWorldVertex();
                 DrawPlayer(&player);
-                DrawBullet(player.body->position, false);
+                DrawBullet(player.body->position, isDrawBulletLine.flag);
             EndMode2D();
 
         EndDrawing();
