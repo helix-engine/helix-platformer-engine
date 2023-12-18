@@ -87,7 +87,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
     }
 }
 
-void DrawBullet(Vector2 position, bool drawLine)
+void DrawBullet(Vector2 playerPos, bool drawLine)
 {
     const Color colors[5] = { RED, GREEN, BLUE, BROWN, PURPLE };
 
@@ -103,8 +103,8 @@ void DrawBullet(Vector2 position, bool drawLine)
             if (drawLine)
             {
                 DrawLine(
-                    position.x, 
-                    position.y, 
+                    playerPos.x, 
+                    playerPos.y, 
                     bullets[i].body->position.x, 
                     bullets[i].body->position.y, 
                     colors[i]
