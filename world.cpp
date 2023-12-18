@@ -30,8 +30,8 @@ float amplitude = 50.0f;
 float frequency = 2.0f;
 bool isGrounded = false;
 
-int numGrounds = 0; // Variable to keep track of the number of ground objects
-int numSteels  = 0; // Variable to keep track of the number of steel objects
+uint8_t numGrounds = 0; // Variable to keep track of the number of ground objects
+uint8_t numSteels  = 0; // Variable to keep track of the number of steel objects
 
 std::shared_ptr<Ground> pGrounds[MAX_GROUNDS] = {};
 std::shared_ptr<Steel> pSteels[MAX_STEELS] = {};
@@ -50,13 +50,13 @@ void InitWorld()
     groundTexture = LoadTexture("resources/ground.png");
     steelTexture  = LoadTexture("resources/steel.png");
 
-    for (int i = 0; i < MAX_GROUNDS; i++)
+    for (uint8_t i = 0; i < MAX_GROUNDS; i++)
     {
         pGrounds[i] = nullptr;
         groundRecData[i] = (Rectangle){ width / 2 * (i + 1) + 600.0f * i, height, width, 100.0f };
     }
 
-    for (int i = 0; i < MAX_STEELS; i++)
+    for (uint8_t i = 0; i < MAX_STEELS; i++)
     {
         pSteels[i] = nullptr;
         steelRecData[i] = (Rectangle){ width * 0.25f + 600.0f * i, height * (GetRandomValue(4, 7) * 0.1f), width * 0.25f, 10.0f };
@@ -68,19 +68,19 @@ void DrawWorldVertex()
     if (drawWorlVertex)
     {
         // Draw created physics bodies
-        int bodiesCount = GetPhysicsBodiesCount();
-        for (int i = 0; i < bodiesCount; i++)
+        uint8_t bodiesCount = GetPhysicsBodiesCount();
+        for (uint8_t i = 0; i < bodiesCount; i++)
         {
             PhysicsBody body = GetPhysicsBody(i);
 
-            int vertexCount = GetPhysicsShapeVerticesCount(i);
-            for (int j = 0; j < vertexCount; j++)
+            uint8_t vertexCount = GetPhysicsShapeVerticesCount(i);
+            for (uint8_t j = 0; j < vertexCount; j++)
             {
                 // Get physics bodies shape vertices to draw lines
                 // Note: GetPhysicsShapeVertex() already calculates rotation transformations
                 Vector2 vertexA = GetPhysicsShapeVertex(body, j);
 
-                int jj = (((j + 1) < vertexCount) ? (j + 1) : 0);   // Get next vertex or first to close the shape
+                uint8_t jj = (((j + 1) < vertexCount) ? (j + 1) : 0);   // Get next vertex or first to close the shape
                 Vector2 vertexB = GetPhysicsShapeVertex(body, jj);
 
                 DrawLineV(vertexA, vertexB, GREEN);     // Draw a line between two vertex positions
@@ -114,7 +114,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
     numGrounds = 0;
     numSteels  = 0;
 
-    for (int i = 0; i < MAX_GROUNDS; i++)
+    for (uint8_t i = 0; i < MAX_GROUNDS; i++)
     {
         Rectangle inViewRec = { 
             GetCameraRectangle().x, 
@@ -135,7 +135,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         }
         else 
         {
-            // No collision, delete the physics body and reset the pointer
+            // No collision, delete the physics body and reset the pouint8_ter
             if (pGrounds[i] != nullptr)
             {
                 pGrounds[i].reset();
@@ -143,7 +143,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         }
     }
 
-    for (int i = 0; i < MAX_GROUNDS; i++)
+    for (uint8_t i = 0; i < MAX_GROUNDS; i++)
     {
         Rectangle inViewRec = { 
             GetCameraRectangle().x, 
@@ -165,7 +165,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         }
         else 
         {
-            // No collision, delete the physics body and reset the pointer
+            // No collision, delete the physics body and reset the pouint8_ter
             if (pSteels[i] != nullptr)
             {
                 pSteels[i].reset();

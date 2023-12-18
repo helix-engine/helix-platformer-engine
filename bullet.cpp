@@ -24,11 +24,11 @@
 #define MAX_BULLETS 5
 
 Bullet bullets[MAX_BULLETS];
-int bulletCount = 0;
+uint8_t bulletCount = 0;
 
 void InitBullet() 
 {
-    for (int i = 0; i < MAX_BULLETS; i++) 
+    for (uint8_t i = 0; i < MAX_BULLETS; i++) 
     {
         bullets[i].body = NULL;
         bullets[i].lifetime = 0.0f;
@@ -51,7 +51,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
     float dx = (directionX == -1.0f) ? position.x + 10.0f : position.x - 10.0f;
     float dy = position.y - 30.0f;
 
-    for (int i = 0; i < bulletCount; i++) 
+    for (uint8_t i = 0; i < bulletCount; i++) 
     {
         // Decrease lifetime
         bullets[i].lifetime -= GetFrameTime();
@@ -93,7 +93,7 @@ void DrawBullet(Vector2 playerPos, bool drawLine)
 
     if (bulletCount > 0)
     {
-        for (int i = 0; i < bulletCount; i++) 
+        for (uint8_t i = 0; i < bulletCount; i++) 
         {
             DrawCircle(
                 bullets[i].body->position.x, 

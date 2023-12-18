@@ -22,7 +22,7 @@
 #include "player.hpp"
 
 /* -> AnimatePlayer() */
-static int frameCounter = 0;
+static uint8_t frameCounter = 0;
 
 /* ---------------------- Private Functions ----------------------- */
 /* ---------------------------------------------------------------- */
@@ -44,7 +44,7 @@ void AnimatePlayer(
     Player* player, 
     float scale, 
     float frameSpeed, 
-    int numFrames, 
+    uint8_t numFrames, 
     bool animate)
 {
     player->source = (Rectangle){

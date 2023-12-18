@@ -26,5 +26,5 @@
 #include "player.hpp"
 #include "world.hpp"
 
-const int screenWidth  = 800;
-const int screenHeight = 450;
+const uint16_t screenWidth  = 800;
+const uint16_t screenHeight = 450;

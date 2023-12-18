@@ -20,6 +20,7 @@
 // distribution.
 
 #include "raylib.h"
+#include "stdint.h"
 #include "raymath.h"
 #include "basic_io.hpp"
 #include "extras/physac.h"

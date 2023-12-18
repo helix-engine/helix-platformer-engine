@@ -22,6 +22,7 @@
 #include <memory>
 #include "raylib.h"
 #include "stdlib.h"
+#include "stdint.h"
 #include "camera.hpp"
 #include "raymath.h"
 #include "extras/physac.h"
@@ -41,7 +42,6 @@ struct Ground
         );
 
         body->enabled = false;
-        body->force.x = 10.0f;
     }
 
     inline ~Ground() 
@@ -66,7 +66,6 @@ struct Steel
         );
 
         body->enabled = false;
-        body->force.x = 10.0f;
     }
 
     inline ~Steel() 
