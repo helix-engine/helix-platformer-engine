@@ -109,7 +109,7 @@ void UpdatePlayer(Player* player, bool isGrounded)
         player->body->velocity.y = (GetInputMovement() != 0) ? -jumpSpeed * 6 : -jumpSpeed * 4;
     }
 
-    PrintS(BoolToString(isGrounded), 1);
+    // PrintS(BoolToString(isGrounded), 1);
 
     PhysicsAddForce(player->body, (Vector2){ 0.0f, 9.8f * player->gravityScale });
 }

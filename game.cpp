@@ -60,7 +60,7 @@ int main(void)
         UpdatePhysics();                                                // Update physics system
         UpdatePlayer(&player, IsPlayerGrounded());                      // Update player
         UpdateCamera2D(&camera, player.body->position);                 // Update camera
-        UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and bullet
+        UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and spwan bullet
         
         UpdateWorld(
             isDrawWorldVertex.flag, 

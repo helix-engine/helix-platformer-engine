@@ -19,12 +19,12 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "random_stone.hpp"
+#include "world.hpp"
 #include "bullet.hpp"
 #include "wilgui.hpp"
 #include "camera.hpp"
 #include "player.hpp"
-#include "world.hpp"
+#include "random_stone.hpp"
 
-const uint16_t screenWidth  = 800;
-const uint16_t screenHeight = 450;
+constexpr uint16_t screenWidth  = 800;
+constexpr uint16_t screenHeight = 450;

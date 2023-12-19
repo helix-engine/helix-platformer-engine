@@ -24,6 +24,8 @@
 #include "basic_io.hpp"
 #include "extras/physac.h"
 
+#define MAX_BULLETS 5
+
 typedef struct Bullet
 {
     PhysicsBody body;

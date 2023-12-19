@@ -21,8 +21,6 @@
 
 #include "bullet.hpp"
 
-#define MAX_BULLETS 5
-
 Bullet bullets[MAX_BULLETS];
 uint8_t bulletCount = 0;
 
