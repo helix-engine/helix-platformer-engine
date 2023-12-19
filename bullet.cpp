@@ -100,11 +100,11 @@ void DrawBullet(Vector2 playerPos, bool drawLine)
             );
             if (drawLine)
             {
-                DrawLine(
-                    playerPos.x, 
-                    playerPos.y, 
-                    bullets[i].body->position.x, 
-                    bullets[i].body->position.y, 
+                // Draw line Cubic Bezier, in-out interpolation (easing), no control points
+                DrawLineBezier(
+                    playerPos, 
+                    bullets[i].body->position, 
+                    2.0f, 
                     colors[i]
                 );
             } 
