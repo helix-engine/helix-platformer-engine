@@ -119,8 +119,8 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         Rectangle inViewRec = { 
             GetCameraRectangle().x, 
             GetCameraRectangle().y, 
-            GetCameraRectangle().width  * 2, 
-            GetCameraRectangle().height * 2 
+            GetCameraRectangle().width  * 1.5f, 
+            GetCameraRectangle().height * 1.5f 
             };
         if (CheckCollisionRecs(inViewRec, groundRecData[i]))
         {
@@ -148,8 +148,8 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         Rectangle inViewRec = { 
             GetCameraRectangle().x, 
             GetCameraRectangle().y, 
-            GetCameraRectangle().width  * 2, 
-            GetCameraRectangle().height * 2 
+            GetCameraRectangle().width  * 1.5f, 
+            GetCameraRectangle().height * 1.5f 
             };
         if (CheckCollisionRecs(inViewRec, steelRecData[i]))
         {

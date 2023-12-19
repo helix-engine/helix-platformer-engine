@@ -31,7 +31,7 @@ static uint8_t frameCounter = 0;
 * Horizontal movement input:
 * 1 -> left, 2 -> right, 0 -> idle
 */
-unsigned char GetInputMovement()
+uint8_t GetInputMovement()
 {
     // Horizontal movement input
     if (IsKeyDown(KEY_LEFT)  || IsKeyDown(KEY_A)) return 1;
