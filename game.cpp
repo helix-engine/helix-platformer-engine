@@ -45,9 +45,9 @@ int main(void)
     Player player = CreatePlayer((Vector2){ screenWidth / 2.0f, screenHeight / 2.0f }, "resources/robo.png");
     Camera2D camera = CreateCamera2D();
 
-    CheckBox isDrawWorldVertex  = CreateCheckBox();
-    CheckBox isDrawWorldTexture = CreateCheckBox();
-    CheckBox isDrawBulletLine   = CreateCheckBox();
+    bool isDrawWorldVertex  = true;
+    bool isDrawWorldTexture = true;
+    bool isDrawBulletLine   = true;
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -63,8 +63,8 @@ int main(void)
         UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and spwan bullet
         
         UpdateWorld(
-            isDrawWorldVertex.flag, 
-            isDrawWorldTexture.flag, 
+            isDrawWorldVertex, 
+            isDrawWorldTexture, 
             GetPlayerRectangle(&player)
         ); // Update world
 
@@ -86,14 +86,16 @@ int main(void)
             ClearBackground(BLACK);
             DrawBackground();
             DrawFPS(0, 0);
-            DrawCheckBox(&isDrawWorldVertex,  "Draw World Vertex",  (Vector2){ 5.0f, 50.0f + 40 * 0 }, 20);
-            DrawCheckBox(&isDrawWorldTexture, "Draw World Texture", (Vector2){ 5.0f, 50.0f + 40 * 1 }, 20);
-            DrawCheckBox(&isDrawBulletLine,   "Draw Bullet Line",   (Vector2){ 5.0f, 50.0f + 40 * 2 }, 20);
+            
+            isDrawWorldVertex  = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 0, 20, 20 }, "Draw World Vertex",  isDrawWorldVertex);
+            isDrawWorldTexture = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 1, 20, 20 }, "Draw World Texture", isDrawWorldTexture);
+            isDrawBulletLine   = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 2, 20, 20 }, "Draw Bullet Line",   isDrawBulletLine);
+
             BeginMode2D(camera);
                 DrawWorldTexture();
                 DrawWorldVertex();
                 DrawPlayer(&player);
-                DrawBullet(player.body->position, isDrawBulletLine.flag);
+                DrawBullet(player.body->position, isDrawBulletLine);
             EndMode2D();
 
         EndDrawing();
