@@ -25,8 +25,14 @@
 #include "player.hpp"
 #include "random_stone.hpp"
 
+// Define a threshold for falling below the screen
+#define FALL_THRESHOLD 5000.0f
+
 #define RAYGUI_IMPLEMENTATION
 #include "extras/raygui.h"
+
+#define PHYSAC_IMPLEMENTATION
+#include "extras/physac.h"
 
 constexpr uint16_t screenWidth  = 800;
 constexpr uint16_t screenHeight = 450;

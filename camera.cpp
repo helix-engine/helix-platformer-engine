@@ -21,7 +21,7 @@
 
 #include "camera.hpp"
 
-Camera2D* pCamera = nullptr;
+Rectangle cameraRec = { 0, 0, 0, 0 };
 
 Camera2D CreateCamera2D()
 {
@@ -36,7 +36,10 @@ Camera2D CreateCamera2D()
 
 void UpdateCamera2D(Camera2D* camera, Vector2 target)
 {
-    pCamera = camera;
+    cameraRec.x = camera->target.x - camera->offset.x / camera->zoom;
+    cameraRec.y = camera->target.y - camera->offset.y / camera->zoom;
+    cameraRec.width  = GetScreenWidth() / camera->zoom;
+    cameraRec.height = GetScreenHeight() / camera->zoom;
 
     camera->target = target;
     camera->offset = (Vector2){ GetScreenWidth() / 2.0f, GetScreenHeight() / 1.4f };
@@ -44,11 +47,5 @@ void UpdateCamera2D(Camera2D* camera, Vector2 target)
 
 Rectangle GetCameraRectangle()
 {
-    Rectangle cameraRec;
-    cameraRec.x = pCamera->target.x - pCamera->offset.x / pCamera->zoom;
-    cameraRec.y = pCamera->target.y - pCamera->offset.y / pCamera->zoom;
-    cameraRec.width  = GetScreenWidth() / pCamera->zoom;
-    cameraRec.height = GetScreenHeight() / pCamera->zoom;
-
     return cameraRec;
 }

@@ -21,12 +21,6 @@
 
 #include "game.hpp"
 
-// Define a threshold for falling below the screen
-#define FALL_THRESHOLD 5000.0f
-
-#define PHYSAC_IMPLEMENTATION
-#include "extras/physac.h"
-
 int main(void)
 {
     // Initialization
