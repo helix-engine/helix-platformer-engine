@@ -26,8 +26,7 @@
 
 #define MAX_BULLETS 5
 
-typedef struct Bullet
-{
+typedef struct Bullet {
     PhysicsBody body;
     float lifetime;
 } Bullet;

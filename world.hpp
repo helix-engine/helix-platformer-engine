@@ -24,11 +24,11 @@
 #include "stdlib.h"
 #include "stdint.h"
 #include "camera.hpp"
-#include "raymath.h"
+#include "basic_io.hpp"
 #include "extras/physac.h"
 
-#define MAX_GROUNDS 12
-#define MAX_STEELS 12
+#define MAX_GROUNDS 24
+#define MAX_STEELS 40 // 42/40 ?
 
 struct Ground
 {
@@ -73,7 +73,9 @@ struct Steel
         DestroyPhysicsBody(body);
     }
 
-    void Draw() const;
+    void Draw(bool isRotate) const;
+
+    bool isRotated = false;
 
     PhysicsBody body = nullptr;
 };

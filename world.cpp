@@ -24,7 +24,7 @@
 Vector2 newGround3Pos = {};
 bool drawWorldTexture = true;
 Texture2D mainBackgroundTexture = {};
-float groundRotation = 0.0f;
+float steelRotation = 0.0f;
 bool drawWorlVertex = true;
 float amplitude = 50.0f;
 float frequency = 2.0f;
@@ -33,14 +33,15 @@ bool isGrounded = false;
 uint8_t numGrounds = 0; // Variable to keep track of the number of ground objects
 uint8_t numSteels  = 0; // Variable to keep track of the number of steel objects
 
-std::shared_ptr<Ground> pGrounds[MAX_GROUNDS] = {};
-std::shared_ptr<Steel> pSteels[MAX_STEELS] = {};
+static std::shared_ptr<Ground> pGrounds[MAX_GROUNDS] = {};
+static std::shared_ptr<Steel> pSteels[MAX_STEELS] = {};
 
 Texture2D groundTexture;
 Texture2D steelTexture;
 
 static Rectangle groundRecData[MAX_GROUNDS] = {};
 static Rectangle steelRecData[MAX_STEELS] = {};
+static bool steelRotateData[MAX_STEELS] = {};
 
 void InitWorld()
 {
@@ -59,35 +60,12 @@ void InitWorld()
     for (uint8_t i = 0; i < MAX_STEELS; i++)
     {
         pSteels[i] = nullptr;
-        steelRecData[i] = (Rectangle){ width * 0.25f + 600.0f * i, height * (GetRandomValue(4, 7) * 0.1f), width * 0.25f, 10.0f };
+        
+        float y = height * (GetRandomValue(4, 7) * 0.1f);
+        steelRecData[i] = (Rectangle){ width * 0.25f + 600.0f * i, y, width * 0.25f, 10.0f };
+    
+        steelRotateData[i] = (y < 300.0f) ? (bool)(GetRandomValue(0, 1)) : false;
     }
-}
-
-void DrawWorldVertex()
-{
-    if (drawWorlVertex)
-    {
-        // Draw created physics bodies
-        uint8_t bodiesCount = GetPhysicsBodiesCount();
-        for (uint8_t i = 0; i < bodiesCount; i++)
-        {
-            PhysicsBody body = GetPhysicsBody(i);
-
-            uint8_t vertexCount = GetPhysicsShapeVerticesCount(i);
-            for (uint8_t j = 0; j < vertexCount; j++)
-            {
-                // Get physics bodies shape vertices to draw lines
-                // Note: GetPhysicsShapeVertex() already calculates rotation transformations
-                Vector2 vertexA = GetPhysicsShapeVertex(body, j);
-
-                uint8_t jj = (((j + 1) < vertexCount) ? (j + 1) : 0);   // Get next vertex or first to close the shape
-                Vector2 vertexB = GetPhysicsShapeVertex(body, jj);
-
-                DrawLineV(vertexA, vertexB, GREEN);     // Draw a line between two vertex positions
-            }
-        }
-    }
-    // DrawRectangleLinesEx(GetCameraRectangle(), 2, GREEN);
 }
 
 void InitBackground()
@@ -110,6 +88,8 @@ void CleanBackground()
 
 void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
 {
+    steelRotation += 0.01f;
+
     // Reset the counter for each frame
     numGrounds = 0;
     numSteels  = 0;
@@ -143,7 +123,7 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         }
     }
 
-    for (uint8_t i = 0; i < MAX_GROUNDS; i++)
+    for (uint8_t i = 0; i < MAX_STEELS; i++)
     {
         Rectangle inViewRec = { 
             GetCameraRectangle().x, 
@@ -159,6 +139,8 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
                 steelRecData[i].width, 
                 steelRecData[i].height
             );
+
+            newObject->isRotated = steelRotateData[i];
 
             pSteels[numSteels] = newObject;
             numSteels++;
@@ -200,6 +182,12 @@ void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
         }
     }
 
+    for (int i = 0; i < numSteels; i++)
+    {
+        float rotation = (pSteels[i]->isRotated) ? steelRotation : 0.0f;
+        SetPhysicsBodyRotation(pSteels[i]->body, rotation);
+    }
+
     drawWorlVertex = drawVertex;
     drawWorldTexture = drawTexture;
 }
@@ -212,15 +200,16 @@ void DrawGroundTexture(Vector2 position)
         WHITE);
 }
 
-void DrawSteelTexture(Vector2 position)
+void DrawSteelTexture(Vector2 position, bool isRotate)
 {
+    const float rotation = (isRotate) ? steelRotation : 0.0f;
     Rectangle source = { 0, 0, (float)steelTexture.width, (float)steelTexture.height };
     DrawTexturePro(
         steelTexture,
         source,
         (Rectangle){ position.x, position.y, (float)steelTexture.width, (float)steelTexture.height },
         (Vector2){ (float)steelTexture.width / 2, (float)steelTexture.height / 2 },
-        0.0f,
+        rotation * 57.295f,
         WHITE
     );
 }
@@ -230,9 +219,9 @@ void Ground::Draw() const
     DrawGroundTexture((Vector2){ body->position.x - 400.f, body->position.y - 50.f });
 }
 
-void Steel::Draw() const
+void Steel::Draw(bool isRotate) const
 {
-    DrawSteelTexture((Vector2){ body->position.x, body->position.y });
+    DrawSteelTexture((Vector2){ body->position.x, body->position.y }, isRotate);
 }
 
 void DrawWorldTexture()
@@ -250,10 +239,37 @@ void DrawWorldTexture()
         {
             if (steel != nullptr)
             {
-                steel->Draw();
+                steel->Draw(steel->isRotated);
             }
         }
     }
+}
+
+void DrawWorldVertex()
+{
+    if (drawWorlVertex)
+    {
+        // Draw created physics bodies
+        uint8_t bodiesCount = GetPhysicsBodiesCount();
+        for (uint8_t i = 0; i < bodiesCount; i++)
+        {
+            PhysicsBody body = GetPhysicsBody(i);
+
+            uint8_t vertexCount = GetPhysicsShapeVerticesCount(i);
+            for (uint8_t j = 0; j < vertexCount; j++)
+            {
+                // Get physics bodies shape vertices to draw lines
+                // Note: GetPhysicsShapeVertex() already calculates rotation transformations
+                Vector2 vertexA = GetPhysicsShapeVertex(body, j);
+
+                uint8_t jj = (((j + 1) < vertexCount) ? (j + 1) : 0);   // Get next vertex or first to close the shape
+                Vector2 vertexB = GetPhysicsShapeVertex(body, jj);
+
+                DrawLineV(vertexA, vertexB, GREEN);     // Draw a line between two vertex positions
+            }
+        }
+    }
+    // DrawRectangleLinesEx(GetCameraRectangle(), 2, GREEN);
 }
 
 void DestroyWorld()
