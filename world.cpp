@@ -86,9 +86,12 @@ void CleanBackground()
     UnloadTexture(mainBackgroundTexture);
 }
 
-void UpdateWorld(bool drawVertex, bool drawTexture, Rectangle playerRec)
+void UpdateWorld(bool drawVertex, bool drawTexture, bool isRotateSteels, Rectangle playerRec)
 {
-    steelRotation += 0.01f;
+    if (isRotateSteels)
+    {
+        steelRotation += 0.01f;
+    }
 
     // Reset the counter for each frame
     numGrounds = 0;

@@ -88,7 +88,8 @@ void DrawWorldVertex();
 void DrawWorldTexture();
 void UpdateWorld(
     bool drawVertex, 
-    bool drawTexture, 
+    bool drawTexture,
+    bool isRotateSteels, 
     Rectangle playerRec);
 void DestroyWorld();
 bool IsPlayerGrounded();

@@ -42,6 +42,7 @@ int main(void)
     bool isDrawWorldVertex  = true;
     bool isDrawWorldTexture = true;
     bool isDrawBulletLine   = true;
+    bool isRotateSteels     = false;
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -58,7 +59,8 @@ int main(void)
         
         UpdateWorld(
             isDrawWorldVertex, 
-            isDrawWorldTexture, 
+            isDrawWorldTexture,
+            isRotateSteels, 
             GetPlayerRectangle(&player)
         ); // Update world
 
@@ -84,6 +86,7 @@ int main(void)
             isDrawWorldVertex  = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 0, 20, 20 }, "Draw World Vertex",  isDrawWorldVertex);
             isDrawWorldTexture = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 1, 20, 20 }, "Draw World Texture", isDrawWorldTexture);
             isDrawBulletLine   = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 2, 20, 20 }, "Draw Bullet Line",   isDrawBulletLine);
+            isRotateSteels     = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 3, 20, 20 }, "Rotate Steels",      isRotateSteels);
 
             BeginMode2D(camera);
                 DrawWorldTexture();
