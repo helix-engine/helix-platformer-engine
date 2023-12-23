@@ -39,7 +39,7 @@ typedef struct Player {
 } Player;
 
 void DeletePlayer(Player& player);
+Player CreatePlayer(Vector2 position);
 void DrawPlayer(const Player& player);
 Rectangle GetPlayerRectangle(const Player& player);
 void UpdatePlayer(Player& player, bool isGrounded);
-Player CreatePlayer(Vector2 position);

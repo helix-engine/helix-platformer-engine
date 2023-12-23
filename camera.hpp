@@ -23,4 +23,4 @@
 
 Camera2D CreateCamera2D();
 Rectangle GetCameraRectangle();
-void UpdateCamera2D(Camera2D* camera, Vector2 target);
+void UpdateCamera2D(Camera2D& camera, Vector2 target);

@@ -24,8 +24,7 @@
 #include "basic_io.hpp"
 #include "extras/physac.h"
 
-typedef struct RandomStone
-{
+typedef struct RandomStone {
     PhysicsBody body;
 } RandomStone;
 

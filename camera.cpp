@@ -34,15 +34,15 @@ Camera2D CreateCamera2D()
     return camera;
 }
 
-void UpdateCamera2D(Camera2D* camera, Vector2 target)
+void UpdateCamera2D(Camera2D& camera, Vector2 target)
 {
-    cameraRec.x = camera->target.x - camera->offset.x / camera->zoom;
-    cameraRec.y = camera->target.y - camera->offset.y / camera->zoom;
-    cameraRec.width  = GetScreenWidth() / camera->zoom;
-    cameraRec.height = GetScreenHeight() / camera->zoom;
+    cameraRec.x = camera.target.x - camera.offset.x / camera.zoom;
+    cameraRec.y = camera.target.y - camera.offset.y / camera.zoom;
+    cameraRec.width  = GetScreenWidth() / camera.zoom;
+    cameraRec.height = GetScreenHeight() / camera.zoom;
 
-    camera->target = target;
-    camera->offset = (Vector2){ GetScreenWidth() / 2.0f, GetScreenHeight() / 1.4f };
+    camera.target = target;
+    camera.offset = (Vector2){ GetScreenWidth() / 2.0f, GetScreenHeight() / 1.4f };
 }
 
 Rectangle GetCameraRectangle()

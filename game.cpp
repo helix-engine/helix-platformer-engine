@@ -55,7 +55,7 @@ int main(void)
         //----------------------------------------------------------------------------------
         UpdatePhysics();                                                // Update physics system
         UpdatePlayer(player, IsPlayerGrounded());                       // Update player
-        UpdateCamera2D(&camera, player.body->position);                 // Update camera
+        UpdateCamera2D(camera, player.body->position);                 // Update camera
         UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and spwan bullet
         
         UpdateWorld(
@@ -102,7 +102,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    DeletePlayer(player);  // Delete the player
+    DeletePlayer(player);   // Delete the player
     CleanBackground();      // Clean the background
     ClosePhysics();         // Unitialize physics
     DestroyWorld();         // Destroy World
