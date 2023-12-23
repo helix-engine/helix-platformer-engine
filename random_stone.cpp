@@ -21,8 +21,26 @@
 
 #include "random_stone.hpp"
 
+static RandomStone objects[2] = {};
+static uint8_t objectSize = 45;
+
 void InitRandomStone()
 {
-    PhysicsBody circle = CreatePhysicsBodyCircle((Vector2){ GetScreenWidth() / 2, GetScreenHeight() / 2 }, 45, 10);
-    circle->enabled = true;
+    objects[0].body = CreatePhysicsBodyCircle((Vector2){ 200, 300 }, objectSize, 10);
+    objects[0].body->enabled = true;
+
+    objects[1].body = CreatePhysicsBodyCircle((Vector2){ 500, 300 }, objectSize, 10);
+    objects[1].body->enabled = true;
+}
+
+void DrawRandomStone()
+{
+    for (const auto& object : objects) 
+    {
+        DrawCircle(
+            object.body->position.x, 
+            object.body->position.y, objectSize, 
+            BROWN
+        );
+    }
 }
