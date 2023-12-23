@@ -21,8 +21,7 @@
 
 #include "player.hpp"
 
-/* -> AnimatePlayer() */
-static uint8_t frameCounter = 0;
+static uint8_t frameCounter = 0; // -> AnimatePlayer()
 static uint8_t recSize[2] = { 50, 50 };
 
 /* ---------------------- Private Functions ----------------------- */
