@@ -22,7 +22,7 @@
 #include "player.hpp"
 
 static uint8_t frameCounter = 0; // -> AnimatePlayer()
-static const uint8_t recSize[2] = { 50, 50 }; // Player rectangle size 
+static const uint8_t recSize = 50; // Player rectangle size 
 static const float updateTime = 0.084f; // Update time for the custom timer
 static float timer = 0.0f; // Custom timer?
 
@@ -146,7 +146,7 @@ void DrawPlayer(const Player& player)
 
 Rectangle GetPlayerRectangle(const Player& player)
 {
-    return (Rectangle){ player.body->position.x, player.body->position.y, recSize[0], recSize[1] };
+    return (Rectangle){ player.body->position.x, player.body->position.y, recSize, recSize };
 }
 
 Player CreatePlayer(Vector2 position)
@@ -156,7 +156,7 @@ Player CreatePlayer(Vector2 position)
     player.currentFrame = 0.0f;
     player.dest = (Rectangle){ 0, 0, 0, 0 };
     player.source = (Rectangle){ 0, 0, 0, 0 };
-    player.body = CreatePhysicsBodyRectangle(position, recSize[0], recSize[1], 1);
+    player.body = CreatePhysicsBodyRectangle(position, recSize, recSize, 1);
     player.body->freezeOrient = true; // Constrain body
     player.body->position = position;
     player.body->mass = 2.0f;
