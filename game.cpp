@@ -28,6 +28,7 @@ int main(void)
 
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(screenWidth, screenHeight, "2D Platformer");
+    InitAudioDevice();
     InitRandomStone();
     InitBackground();
     InitPhysics();
@@ -105,6 +106,7 @@ int main(void)
     CleanBackground();      // Clean the background
     ClosePhysics();         // Unitialize physics
     DestroyWorld();         // Destroy World
+    CloseAudioDevice();     // Close audio device
     CloseWindow();          // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

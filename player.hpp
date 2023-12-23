@@ -34,6 +34,7 @@ typedef struct Player {
     Rectangle source;
     Texture2D texture;
     PhysicsBody body;
+    Sound walkStep;
 } Player;
 
 void DeletePlayer(Player* player);

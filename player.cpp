@@ -22,7 +22,9 @@
 #include "player.hpp"
 
 static uint8_t frameCounter = 0; // -> AnimatePlayer()
-static uint8_t recSize[2] = { 50, 50 };
+static const uint8_t recSize[2] = { 50, 50 }; // Player rectangle size 
+static const float updateTime = 0.084f; // Update time for the custom timer
+static float timer = 0.0f; // Custom timer?
 
 /* ---------------------- Private Functions ----------------------- */
 /* ---------------------------------------------------------------- */
@@ -81,7 +83,7 @@ void AnimatePlayer(
 
 void UpdatePlayer(Player* player, bool isGrounded)
 {
-    AnimatePlayer(player, 4.0f, 6.0f, 2, (GetInputMovement() != 0));
+    AnimatePlayer(player, 4.0f, 9.0f, 2, (GetInputMovement() != 0));
 
     if (IsKeyDown(KEY_LEFT_SHIFT)) player->speed = 0.45f;
     else player->speed = 0.2f;
@@ -102,11 +104,24 @@ void UpdatePlayer(Player* player, bool isGrounded)
 
     // PrintS(BoolToString(GetInputMovement() != 0), 1);
 
+    const bool isJump = (IsKeyDown(KEY_SPACE) && isGrounded || /* For rec objects */
+        IsKeyDown(KEY_SPACE) && player->body->isGrounded /* For rec physics objects */) ? true : false;
+
     // Vertical movement input checking if player physics body is grounded
-    if (IsKeyDown(KEY_SPACE) && isGrounded || /* For rec objects */
-            IsKeyDown(KEY_SPACE) && player->body->isGrounded /* For rec physics objects */)
+    if (isJump)
     {
         player->body->velocity.y = (GetInputMovement() != 0) ? -jumpSpeed * 6 : -jumpSpeed * 4;
+    }
+
+    // Player sound
+    if (GetInputMovement() != 0)
+    {
+        timer += GetFrameTime() * 0.22f;
+        if (timer >= updateTime)
+        {
+            timer = 0.0f;
+            PlaySound(player->walkStep);
+        }
     }
 
     // PrintS(BoolToString(isGrounded), 1);
@@ -143,11 +158,13 @@ Player CreatePlayer(Vector2 position, const char* texture)
     player.body->mass = 2.0f;
     player.texture = LoadTexture(texture);
     player.gravityScale = 14.0f;
+    player.walkStep = LoadSound("resources/walk_step.wav");
 
     return player;
 }
 
 void DeletePlayer(Player* player)
 {
+    UnloadSound(player->walkStep);
     UnloadTexture(player->texture);
 }
