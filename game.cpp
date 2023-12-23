@@ -37,7 +37,7 @@ int main(void)
 
     SetPhysicsGravity(0.0f, 0.2f); // Adjust the magnitude
 
-    Player player = CreatePlayer((Vector2){ screenWidth / 2.0f, screenHeight / 2.0f }, "resources/robo.png");
+    Player player = CreatePlayer((Vector2){ screenWidth / 2.0f, screenHeight / 2.0f });
     Camera2D camera = CreateCamera2D();
 
     bool isDrawWorldVertex  = true;
@@ -54,7 +54,7 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdatePhysics();                                                // Update physics system
-        UpdatePlayer(&player, IsPlayerGrounded());                      // Update player
+        UpdatePlayer(player, IsPlayerGrounded());                       // Update player
         UpdateCamera2D(&camera, player.body->position);                 // Update camera
         UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and spwan bullet
         
@@ -62,7 +62,7 @@ int main(void)
             isDrawWorldVertex, 
             isDrawWorldTexture,
             isRotateSteels, 
-            GetPlayerRectangle(&player)
+            GetPlayerRectangle(player)
         ); // Update world
 
         // Check if the player falls
@@ -92,7 +92,7 @@ int main(void)
             BeginMode2D(camera);
                 DrawWorldTexture();
                 DrawWorldVertex();
-                DrawPlayer(&player);
+                DrawPlayer(player);
                 DrawBullet(player.body->position, isDrawBulletLine);
             EndMode2D();
 
@@ -102,7 +102,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    DeletePlayer(&player);  // Delete the player
+    DeletePlayer(player);  // Delete the player
     CleanBackground();      // Clean the background
     ClosePhysics();         // Unitialize physics
     DestroyWorld();         // Destroy World

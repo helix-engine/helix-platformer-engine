@@ -34,11 +34,12 @@ typedef struct Player {
     Rectangle source;
     Texture2D texture;
     PhysicsBody body;
-    Sound walkStep;
+    Sound walkStepSound;
+    Sound jumpSound;
 } Player;
 
-void DeletePlayer(Player* player);
-void DrawPlayer(const Player* player);
-Rectangle GetPlayerRectangle(const Player* player);
-void UpdatePlayer(Player* player, bool isGrounded);
-Player CreatePlayer(Vector2 position, const char* texture);
+void DeletePlayer(Player& player);
+void DrawPlayer(const Player& player);
+Rectangle GetPlayerRectangle(const Player& player);
+void UpdatePlayer(Player& player, bool isGrounded);
+Player CreatePlayer(Vector2 position);
