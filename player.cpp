@@ -23,6 +23,7 @@
 
 /* -> AnimatePlayer() */
 static uint8_t frameCounter = 0;
+static uint8_t recSize[2] = { 50, 50 };
 
 /* ---------------------- Private Functions ----------------------- */
 /* ---------------------------------------------------------------- */
@@ -127,7 +128,7 @@ void DrawPlayer(const Player* player)
 
 Rectangle GetPlayerRectangle(const Player* player)
 {
-    return (Rectangle){ player->body->position.x, player->body->position.y, 50, 50 };
+    return (Rectangle){ player->body->position.x, player->body->position.y, recSize[0], recSize[1] };
 }
 
 Player CreatePlayer(Vector2 position, const char* texture)
@@ -137,7 +138,7 @@ Player CreatePlayer(Vector2 position, const char* texture)
     player.currentFrame = 0.0f;
     player.dest = (Rectangle){ 0, 0, 0, 0 };
     player.source = (Rectangle){ 0, 0, 0, 0 };
-    player.body = CreatePhysicsBodyRectangle(position, 50, 50, 1);
+    player.body = CreatePhysicsBodyRectangle(position, recSize[0], recSize[1], 1);
     player.body->freezeOrient = true; // Constrain body
     player.body->position = position;
     player.body->mass = 2.0f;
