@@ -21,26 +21,78 @@
 
 #include "random_stone.hpp"
 
-static RandomStone objects[2] = {};
+static std::unique_ptr<std::vector<std::unique_ptr<RandomStone>>> objects = {};
 static uint8_t objectSize = 45;
+static float randomStoneTimer = 0.0f;
 
-void InitRandomStone()
+bool isActive = false;
+
+void InitRandomStone(Vector2 playerPos)
 {
-    objects[0].body = CreatePhysicsBodyCircle((Vector2){ 200, 300 }, objectSize, 10);
-    objects[0].body->enabled = true;
+    objects = std::make_unique<std::vector<std::unique_ptr<RandomStone>>>();
 
-    objects[1].body = CreatePhysicsBodyCircle((Vector2){ 500, 300 }, objectSize, 10);
-    objects[1].body->enabled = true;
+    objects->push_back(std::make_unique<RandomStone>());
+    objects->push_back(std::make_unique<RandomStone>());
+
+    objects->at(0)->body = CreatePhysicsBodyCircle((Vector2){ playerPos.x - 150.0f, playerPos.y - 200.0f }, objectSize, 10);
+    objects->at(0)->body->enabled = true;
+
+    objects->at(1)->body = CreatePhysicsBodyCircle((Vector2){ playerPos.x + 150.0f, playerPos.y - 200.0f }, objectSize, 10);
+    objects->at(1)->body->enabled = true;
+
+    randomStoneTimer = 0.0f;
+}
+
+void UpdateRandomStone(const Rectangle& cameraRec, const Vector2& playerPos)
+{
+    if (isActive)
+    {
+        for (auto it = objects->begin(); it != objects->end();)
+        {
+            const Rectangle updateCameraRec = { cameraRec.x, cameraRec.y, cameraRec.width * 1.5f, cameraRec.height * 1.5f };
+
+            if (!CheckCollisionCircleRec((*it)->body->position, (float)objectSize, updateCameraRec))
+            {
+                it = objects->erase(it);
+                PrintS("A stone destroyed (out of camera)", true);
+            }
+            else
+            {
+                it++;
+            }
+        }
+    }
+    else
+    {
+        randomStoneTimer += GetFrameTime();
+
+        if (randomStoneTimer > 10.0f)
+        {
+            InitRandomStone(playerPos);
+            isActive = true;
+        }
+    }
+
+    if (objects != nullptr)
+    {
+        if (objects->empty()) isActive = false;
+    }
+
+    // PrintI(objects->size(), true);
 }
 
 void DrawRandomStone()
 {
-    for (const auto& object : objects) 
+    if (isActive)
     {
-        DrawCircle(
-            object.body->position.x, 
-            object.body->position.y, objectSize, 
-            BROWN
-        );
+        for (auto it = objects->begin(); it != objects->end(); it++)
+        {
+            DrawCircle(
+                (*it)->body->position.x, 
+                (*it)->body->position.y, 
+                objectSize, 
+                BROWN
+            );
+        }
     }
 }

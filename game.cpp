@@ -29,7 +29,6 @@ int main(void)
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(screenWidth, screenHeight, "2D Platformer");
     InitAudioDevice();
-    InitRandomStone();
     InitBackground();
     InitPhysics();
     InitBullet();
@@ -54,6 +53,7 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdatePhysics();                                                // Update physics system
+        UpdateRandomStone(GetCameraRectangle(), player.body->position); // Update random stone
         UpdatePlayer(player, IsPlayerGrounded());                       // Update player
         UpdateCamera2D(camera, player.body->position);                  // Update camera
         UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and spwan bullet

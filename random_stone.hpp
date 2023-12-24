@@ -19,14 +19,25 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
+#include <vector>
+#include <memory>
+
 #include "raylib.h"
 #include "stdint.h"
 #include "basic_io.hpp"
 #include "extras/physac.h"
 
-typedef struct RandomStone {
-    PhysicsBody body;
-} RandomStone;
+struct RandomStone 
+{
+    ~RandomStone()
+    {
+        DestroyPhysicsBody(body);
+    }
 
-void InitRandomStone();
+    PhysicsBody body;
+};
+
+void UpdateRandomStone(
+    const Rectangle& cameraRec,
+    const Vector2& playerPos);
 void DrawRandomStone();
