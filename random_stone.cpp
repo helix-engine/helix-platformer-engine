@@ -29,6 +29,8 @@ bool isActive = false;
 
 void InitRandomStone(Vector2 playerPos)
 {
+    objects.reset();
+    
     objects = std::make_unique<std::vector<std::unique_ptr<RandomStone>>>();
 
     objects->push_back(std::make_unique<RandomStone>());
