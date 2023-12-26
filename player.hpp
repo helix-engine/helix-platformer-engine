@@ -30,6 +30,7 @@ typedef struct Player {
     float facing;
     float currentFrame;
     float gravityScale;
+    Rectangle rectangle;
     Rectangle dest;
     Rectangle source;
     Texture2D texture;

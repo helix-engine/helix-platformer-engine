@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "raylib.h"
 #include "stdint.h"
@@ -28,17 +29,23 @@
 
 struct Coin 
 {
-    inline Coin(Vector2 position, float size)
+    inline Coin(Vector2 position, float size, uint8_t i)
     {
         x = position.x;
         y = position.y;
         width  = size;
         height = size;
+        id = i;
     }
 
     inline Rectangle GetRectangle() const
     {
         return (Rectangle){ x, y, width, height };
+    }
+
+    inline void Draw() const
+    {
+        DrawRectangleLinesEx(GetRectangle(), 1.8f, GREEN);
     } 
 
     float x;
@@ -49,13 +56,15 @@ struct Coin
 };
 
 void InitCoin();
-void UpdateCoin(const Rectangle& playerRec);
+void UpdateCoin(
+    const Rectangle& playerRec);
 void DestroyCoin();
+void DrawCoin();
 uint8_t GetCoinCount();
 
 inline std::string GetCoinCountString()
 {
     std::string coin = { "Coin: " };
 
-    return { coin + std::to_string(GetCoinCount()) };
+    return { coin + std::to_string(100 - GetCoinCount()) };
 }

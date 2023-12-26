@@ -131,6 +131,8 @@ void UpdatePlayer(Player& player, bool isGrounded)
     // PrintS(BoolToString(isGrounded), 1);
 
     PhysicsAddForce(player.body, (Vector2){ 0.0f, 9.8f * player.gravityScale });
+
+    player.rectangle = (Rectangle){ player.body->position.x - 30.0f, player.body->position.y - 30.0f, recSize, recSize };
 }
 
 void DrawPlayer(const Player& player)

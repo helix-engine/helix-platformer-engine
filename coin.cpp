@@ -30,13 +30,31 @@ void InitCoin()
 
     for (uint8_t i = 0; i < 100; i++)
     {
-
+        objects.push_back(Coin(
+            (Vector2){ (float)GetRandomValue(0, 100000), (float)GetRandomValue(100, 300) },
+            80, i  
+        ));
     }
 }
 
 void UpdateCoin(const Rectangle& playerRec)
 {
+    for (auto it = objects.begin(); it != objects.end(); ++it)
+    {
+        if (CheckCollisionRecs(it->GetRectangle(), playerRec))
+        {
+            objects.erase(it);
+            break; // Exit the loop after erasing one element
+        }
+    }
+}
 
+void DrawCoin()
+{
+    for (const auto& object : objects)
+    {
+        object.Draw();
+    }
 }
 
 void DestroyCoin()

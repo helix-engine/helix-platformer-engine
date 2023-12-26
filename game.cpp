@@ -33,6 +33,7 @@ int main(void)
     InitPhysics();
     InitBullet();
     InitWorld();
+    InitCoin();
 
     SetPhysicsGravity(0.0f, 0.2f); // Adjust the magnitude
 
@@ -57,6 +58,7 @@ int main(void)
         UpdatePlayer(player, IsPlayerGrounded());                       // Update player
         UpdateCamera2D(camera, player.body->position);                  // Update camera
         UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and spwan bullet
+        UpdateCoin(player.rectangle);                                   // Update coin
 
         UpdateRandomBox(
             GetCameraRectangle(),
@@ -102,7 +104,9 @@ int main(void)
                 DrawRandomStone();
                 DrawRandomBox();
                 DrawPlayer(player);
+                // DrawRectangleLinesEx(player.rectangle, 1.8, RED);
                 DrawBullet(player.body->position, isDrawBulletLine);
+                DrawCoin();
             EndMode2D();
 
         EndDrawing();
