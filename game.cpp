@@ -89,6 +89,7 @@ int main(void)
             ClearBackground(BLACK);
             DrawBackground();
             DrawFPS(0, 0);
+            DrawText(GetCoinCountString().c_str(), screenWidth - 100.0f, 10, 15, BLACK);
             
             isDrawWorldVertex  = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 0, 20, 20 }, "Draw World Vertex",  isDrawWorldVertex);
             isDrawWorldTexture = GuiCheckBox((Rectangle){ 5.0f, 50.0f + 40 * 1, 20, 20 }, "Draw World Texture", isDrawWorldTexture);

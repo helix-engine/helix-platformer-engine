@@ -19,22 +19,43 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "coin.hpp"
-#include "world.hpp"
-#include "bullet.hpp"
-#include "camera.hpp"
-#include "player.hpp"
-#include "random_box.hpp"
-#include "random_stone.hpp"
+#include <vector>
+#include <string>
 
-// Define a threshold for falling below the screen
-#define FALL_THRESHOLD 5000.0f
+#include "raylib.h"
+#include "stdint.h"
+#include "basic_io.hpp"
 
-#define RAYGUI_IMPLEMENTATION
-#include "extras/raygui.h"
+struct Coin 
+{
+    inline Coin(Vector2 position, float size)
+    {
+        x = position.x;
+        y = position.y;
+        width  = size;
+        height = size;
+    }
 
-#define PHYSAC_IMPLEMENTATION
-#include "extras/physac.h"
+    inline Rectangle GetRectangle() const
+    {
+        return (Rectangle){ x, y, width, height };
+    } 
 
-constexpr uint16_t screenWidth  = 800;
-constexpr uint16_t screenHeight = 450;
+    float x;
+    float y;
+    float width;
+    float height;
+    uint8_t id;
+};
+
+void InitCoin();
+void UpdateCoin(const Rectangle& playerRec);
+void DestroyCoin();
+uint8_t GetCoinCount();
+
+inline std::string GetCoinCountString()
+{
+    std::string coin = { "Coin: " };
+
+    return { coin + std::to_string(GetCoinCount()) };
+}

@@ -20,21 +20,31 @@
 // distribution.
 
 #include "coin.hpp"
-#include "world.hpp"
-#include "bullet.hpp"
-#include "camera.hpp"
-#include "player.hpp"
-#include "random_box.hpp"
-#include "random_stone.hpp"
 
-// Define a threshold for falling below the screen
-#define FALL_THRESHOLD 5000.0f
+static Texture2D texture = {};
+static std::vector<Coin> objects = {};
 
-#define RAYGUI_IMPLEMENTATION
-#include "extras/raygui.h"
+void InitCoin()
+{
+    texture = LoadTexture("");
 
-#define PHYSAC_IMPLEMENTATION
-#include "extras/physac.h"
+    for (uint8_t i = 0; i < 100; i++)
+    {
 
-constexpr uint16_t screenWidth  = 800;
-constexpr uint16_t screenHeight = 450;
+    }
+}
+
+void UpdateCoin(const Rectangle& playerRec)
+{
+
+}
+
+void DestroyCoin()
+{
+    UnloadTexture(texture);
+}
+
+uint8_t GetCoinCount()
+{
+    return objects.size();
+}
