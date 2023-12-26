@@ -19,21 +19,26 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "world.hpp"
-#include "bullet.hpp"
-#include "camera.hpp"
-#include "player.hpp"
-#include "random_box.hpp"
-#include "random_stone.hpp"
+#include <vector>
+#include <memory>
 
-// Define a threshold for falling below the screen
-#define FALL_THRESHOLD 5000.0f
-
-#define RAYGUI_IMPLEMENTATION
-#include "extras/raygui.h"
-
-#define PHYSAC_IMPLEMENTATION
+#include "raylib.h"
+#include "stdint.h"
+#include "basic_io.hpp"
 #include "extras/physac.h"
 
-constexpr uint16_t screenWidth  = 800;
-constexpr uint16_t screenHeight = 450;
+struct RandomBox 
+{
+    ~RandomBox()
+    {
+        DestroyPhysicsBody(body);
+    }
+
+    PhysicsBody body;
+};
+
+void UpdateRandomBox(
+    const Rectangle& cameraRec,
+    const Vector2& playerPos,
+    const float playerFacing);
+void DrawRandomBox();

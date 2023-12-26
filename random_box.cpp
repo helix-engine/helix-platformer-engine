@@ -19,32 +19,36 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "random_stone.hpp"
+#include "random_box.hpp"
 
-static std::unique_ptr<std::vector<std::unique_ptr<RandomStone>>> objects = {};
-static uint8_t objectSize = 45;
-static float randomStoneTimer = 0.0f;
+static std::unique_ptr<std::vector<std::unique_ptr<RandomBox>>> objects = {};
+static uint8_t objectSize = 55;
+static float randomBoxTimer = 0.0f;
 static bool isActive = false;
 
-void InitRandomStone(Vector2 playerPos)
+void InitRandomBox(Vector2 playerPos, const float playerFacing)
 {
     objects.reset();
     
-    objects = std::make_unique<std::vector<std::unique_ptr<RandomStone>>>();
+    objects = std::make_unique<std::vector<std::unique_ptr<RandomBox>>>();
 
-    objects->push_back(std::make_unique<RandomStone>());
-    objects->push_back(std::make_unique<RandomStone>());
+    objects->push_back(std::make_unique<RandomBox>());
+    objects->push_back(std::make_unique<RandomBox>());
 
-    objects->at(0)->body = CreatePhysicsBodyCircle((Vector2){ playerPos.x - 150.0f, playerPos.y - 200.0f }, objectSize, 10);
+    const float x = (playerFacing == -1.0f) ? playerPos.x + 100 : playerPos.x - 100;
+
+    objects->at(0)->body = CreatePhysicsBodyRectangle((Vector2){ x, playerPos.y - 100.0f }, objectSize, objectSize, 1);
     objects->at(0)->body->enabled = true;
+    objects->at(0)->body->freezeOrient = true;
 
-    objects->at(1)->body = CreatePhysicsBodyCircle((Vector2){ playerPos.x + 150.0f, playerPos.y - 200.0f }, objectSize, 10);
+    objects->at(1)->body = CreatePhysicsBodyRectangle((Vector2){ x * 1.2f, playerPos.y - 100.0f }, objectSize, objectSize, 1);
     objects->at(1)->body->enabled = true;
+    objects->at(1)->body->freezeOrient = true;
 
-    randomStoneTimer = 0.0f;
+    randomBoxTimer = 0.0f;
 }
 
-void UpdateRandomStone(const Rectangle& cameraRec, const Vector2& playerPos)
+void UpdateRandomBox(const Rectangle& cameraRec, const Vector2& playerPos, const float playerFacing)
 {
     if (isActive)
     {
@@ -55,7 +59,7 @@ void UpdateRandomStone(const Rectangle& cameraRec, const Vector2& playerPos)
             if (!CheckCollisionCircleRec((*it)->body->position, (float)objectSize, updateCameraRec))
             {
                 it = objects->erase(it);
-                PrintS("A stone destroyed (out of camera)", true);
+                PrintS("A box destroyed (out of camera)", true);
             }
             else
             {
@@ -65,11 +69,11 @@ void UpdateRandomStone(const Rectangle& cameraRec, const Vector2& playerPos)
     }
     else
     {
-        randomStoneTimer += GetFrameTime();
+        randomBoxTimer += GetFrameTime();
 
-        if (randomStoneTimer > 10.0f)
+        if (randomBoxTimer > 10.0f)
         {
-            InitRandomStone(playerPos);
+            InitRandomBox(playerPos, playerFacing);
             isActive = true;
         }
     }
@@ -82,17 +86,16 @@ void UpdateRandomStone(const Rectangle& cameraRec, const Vector2& playerPos)
     // PrintI(objects->size(), true);
 }
 
-void DrawRandomStone()
+void DrawRandomBox()
 {
     if (isActive)
     {
         for (auto it = objects->begin(); it != objects->end(); it++)
         {
-            DrawCircle(
-                (*it)->body->position.x, 
-                (*it)->body->position.y, 
-                objectSize, 
-                BROWN
+            DrawRectangleV(
+                (Vector2){ (*it)->body->position.x - objectSize / 2, (*it)->body->position.y - objectSize / 2 }, 
+                (Vector2){ (float)objectSize, (float)objectSize },
+                GOLD
             );
         }
     }

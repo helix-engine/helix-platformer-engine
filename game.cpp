@@ -57,6 +57,12 @@ int main(void)
         UpdatePlayer(player, IsPlayerGrounded());                       // Update player
         UpdateCamera2D(camera, player.body->position);                  // Update camera
         UpdateAndSpawnBullet(player.body->position, player.facing);     // Update and spwan bullet
+
+        UpdateRandomBox(
+            GetCameraRectangle(),
+            player.body->position,
+            player.facing
+        ); // Update random box
         
         UpdateWorld(
             isDrawWorldVertex, 
@@ -93,6 +99,7 @@ int main(void)
                 DrawWorldTexture();
                 DrawWorldVertex();
                 DrawRandomStone();
+                DrawRandomBox();
                 DrawPlayer(player);
                 DrawBullet(player.body->position, isDrawBulletLine);
             EndMode2D();
