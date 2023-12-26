@@ -48,7 +48,7 @@ void UpdateRandomStone(const Rectangle& cameraRec, const Vector2& playerPos)
 {
     if (isActive)
     {
-        for (auto it = objects->begin(); it != objects->end();)
+        for (auto it = objects->begin(); it != objects->end(); it++)
         {
             const Rectangle updateCameraRec = { cameraRec.x, cameraRec.y, cameraRec.width * 1.5f, cameraRec.height * 1.5f };
 
@@ -56,10 +56,7 @@ void UpdateRandomStone(const Rectangle& cameraRec, const Vector2& playerPos)
             {
                 it = objects->erase(it);
                 PrintS("A stone destroyed (out of camera)", true);
-            }
-            else
-            {
-                it++;
+                break; // Exit the loop after erasing one element
             }
         }
     }

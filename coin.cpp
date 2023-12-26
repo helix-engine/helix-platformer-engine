@@ -39,7 +39,7 @@ void InitCoin()
 
 void UpdateCoin(const Rectangle& playerRec)
 {
-    for (auto it = objects.begin(); it != objects.end(); ++it)
+    for (auto it = objects.begin(); it != objects.end(); it++)
     {
         if (CheckCollisionRecs(it->GetRectangle(), playerRec))
         {
