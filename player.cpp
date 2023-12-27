@@ -21,7 +21,6 @@
 
 #include "player.hpp"
 
-static uint8_t frameCounter = 0; // -> AnimatePlayer()
 static const uint8_t recSize = 50; // Player rectangle size 
 static const float updateTime = 0.084f; // Update time for the custom timer
 static float timer = 0.0f; // Custom timer?
@@ -42,48 +41,14 @@ uint8_t GetInputMovement()
     return 0;
 }
 
-void AnimatePlayer(
-    Player& player, 
-    float scale, 
-    float frameSpeed, 
-    uint8_t numFrames, 
-    bool animate)
-{
-    player.source = (Rectangle){
-        .x      = player.currentFrame * (float)player.texture.width / numFrames,
-        .y      = 0.0f, 
-        .width  = player.facing * (float)player.texture.width / numFrames,
-        .height = (float)player.texture.height
-    };
-
-    player.dest = (Rectangle){
-        .x      = player.body->position.x - 30.0f, 
-        .y      = player.body->position.y - 30.0f,
-        .width  = scale * (float)player.texture.width / numFrames,
-        .height = scale * (float)player.texture.height
-    };
-
-    if (animate)
-    {
-        frameCounter++;
-        if (frameCounter >= (GetFPS() / frameSpeed))
-        {
-            frameCounter = 0;
-            player.currentFrame++;
-            if (player.currentFrame > numFrames) 
-            {
-                player.currentFrame = 0;
-            }
-        }
-    }
-}
-
 /* ----------------------- Public Functions ----------------------- */
 /* ---------------------------------------------------------------- */
 
 void UpdatePlayer(Player& player, bool isGrounded)
 {
-    AnimatePlayer(player, 4.0f, 9.0f, 2, (GetInputMovement() != 0));
+    // AnimatePlayer(player, 4.0f, 9.0f, 2, (GetInputMovement() != 0));
+
+    AnimateCharacter(player, 4.0f, 9.0f, 2, (GetInputMovement() != 0));
 
     if (IsKeyDown(KEY_LEFT_SHIFT)) player.speed = 0.45f;
     else player.speed = 0.2f;

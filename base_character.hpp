@@ -19,16 +19,23 @@
 // 3. This notice may not be removed or altered from any source
 // distribution.
 
-#include "base_character.hpp"
+#include "raylib.h"
+#include "stdint.h"
+#include "raymath.h"
+#include "basic_io.hpp"
+#include "extras/physac.h"
 
-struct Player : public BaseCharacter
+struct BaseCharacter
 {
-    Sound walkStepSound;
-    Sound jumpSound;
+    float speed;
+    float facing;
+    float currentFrame;
+    float gravityScale;
+    Rectangle rectangle;
+    Rectangle dest;
+    Rectangle source;
+    Texture2D texture;
+    PhysicsBody body;
 };
 
-void DeletePlayer(Player& player);
-Player CreatePlayer(Vector2 position);
-void DrawPlayer(const Player& player);
-Rectangle GetPlayerRectangle(const Player& player);
-void UpdatePlayer(Player& player, bool isGrounded);
+void AnimateCharacter(BaseCharacter& self, float scale, float frameSpeed, uint8_t numFrames, bool animate);

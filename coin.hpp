@@ -21,7 +21,6 @@
 
 #include <vector>
 #include <string>
-#include <algorithm>
 
 #include "raylib.h"
 #include "stdint.h"

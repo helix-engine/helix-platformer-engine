@@ -82,8 +82,6 @@ int main(void)
             PrintS("Reset player position", 1);
         }
 
-        // PrintS(BoolToString(IsPlayerGrounded()), 1);
-
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
