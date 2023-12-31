@@ -21,8 +21,9 @@
 
 #include "bullet.hpp"
 
-Bullet bullets[MAX_BULLETS];
-uint8_t bulletCount = 0;
+static Bullet bullets[MAX_BULLETS];
+static uint8_t bulletCount = 0;
+static Sound shotSound = {};
 
 void InitBullet() 
 {
@@ -31,6 +32,8 @@ void InitBullet()
         bullets[i].body = NULL;
         bullets[i].lifetime = 0.0f;
     }
+
+    shotSound = LoadSound("resources/shot.wav");
 }
 
 Bullet* GetNextBullet() 
@@ -71,6 +74,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
     // Spawn new bullets
     if (IsKeyPressed(KEY_C) && bulletCount < MAX_BULLETS) 
     {
+        PlaySound(shotSound);
         Bullet* newBullet = GetNextBullet();
         if (newBullet != NULL) 
         {
@@ -109,4 +113,9 @@ void DrawBullet(Vector2 playerPos, bool drawLine)
             } 
         }
     }
+}
+
+void DeleteBullet()
+{
+    UnloadSound(shotSound);
 }

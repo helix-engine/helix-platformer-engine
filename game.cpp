@@ -117,6 +117,7 @@ int main(void)
     CleanBackground();      // Clean the background
     ClosePhysics();         // Unitialize physics
     DestroyWorld();         // Destroy World
+    DeleteBullet();         // Delete Bullet
     CloseAudioDevice();     // Close audio device
     CloseWindow();          // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
