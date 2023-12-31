@@ -46,8 +46,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
 {
     // PrintI(bulletCount, 1);
 
-    float dx = (directionX == -1.0f) ? position.x + 10.0f : position.x - 10.0f;
-    float dy = position.y - 30.0f;
+    Vector2 spawnPos = { (directionX == -1.0f) ? position.x + 10.0f : position.x - 10.0f, position.y - 30.0f };
 
     for (uint8_t i = 0; i < bulletCount; i++) 
     {
@@ -75,7 +74,7 @@ void UpdateAndSpawnBullet(Vector2 position, float directionX)
         Bullet* newBullet = GetNextBullet();
         if (newBullet != NULL) 
         {
-            newBullet->body = CreatePhysicsBodyCircle((Vector2){ dx, dy }, 8, 10);
+            newBullet->body = CreatePhysicsBodyCircle((Vector2){ spawnPos.x, spawnPos.y }, 8, 10);
             newBullet->lifetime = 3.0f;
             
             float forceX = (directionX == -1.0f) ? 800.0f : -800.0f;
